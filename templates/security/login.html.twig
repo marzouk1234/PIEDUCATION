@@ -1,0 +1,126 @@
+{% extends 'front.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block body %}
+<!-- Custom Styling for Login Form -->
+<style>
+    .login-container {
+        max-width: 400px;
+        margin: 5rem auto;
+        padding: 2rem;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    }
+    .login-title {
+        text-align: center;
+        font-size: 1.8rem;
+        font-weight: bold;
+        margin-bottom: 1.5rem;
+        color: black;
+    }
+    .form-control {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-bottom: 1rem;
+    }
+    .btn-login {
+        background-color:rgb(215, 83, 83);
+        color: white;
+        padding: 12px;
+        width: 100%;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+    .btn-login:hover {
+        background-color:rgb(33, 12, 141);
+    }
+    .error-message {
+        background: rgba(255, 0, 0, 0.1);
+        color: red;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 1rem;
+        display: none;
+    }
+    .signup-link {
+        display: block;
+        text-align: center;
+        margin-top: 1rem;
+    }
+    .signup-link a {
+        color:rgb(35, 19, 98);
+        text-decoration: none;
+    }
+    .signup-link a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<div class="main-banner" id="top">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="login-container bg-gray-900 text-white p-6">
+                    {% if error %}
+                        <div class="error-message" id="error-message">
+                            {{ error.messageKey|trans(error.messageData, 'security') }}
+                        </div>
+                    {% endif %}
+
+                    {% if app.user %}
+                        <div class="mb-3 text-center">
+                            You are logged in as <strong>{{ app.user.userIdentifier }}</strong>,
+                            <a href="{{ path('app_logout') }}" class="text-red-400 hover:text-red-500">Logout</a>
+                        </div>
+                    {% endif %}
+
+                    <h1 class="login-title">Please Sign In</h1>
+
+                    <form method="post" id="login-form">
+                        <label for="username">Email</label>
+                        <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="email" required autofocus>
+                        
+                        <label for="password">Password</label>
+                        <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
+
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                        <button class="btn-login" type="submit">Sign in</button>
+                    </form>
+
+                    <div class="signup-link">
+                        <p>Don't have an account? <a href="{{ path('app_register') }}">Sign Up</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        let errorMessage = document.getElementById("error-message");
+
+        if (errorMessage) {
+            errorMessage.style.display = "block";
+
+            // Simuler un affichage JSON pour une API
+            let errorData = {
+                "status": "error",
+                "message": errorMessage.innerText
+            };
+
+            console.log("Login Error:", JSON.stringify(errorData, null, 2));
+        }
+    });
+</script>
+
+{% endblock %}

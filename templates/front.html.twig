@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}EduPlay{% endblock %}</title>
+
+    <!-- Styles -->
+    <link href="{{ asset('vendorf/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('assetsf/css/fontawesome.css') }}">
+    <link rel="stylesheet" href="{{ asset('assetsf/css/templatemo-space-dynamic.css') }}">
+    <link rel="stylesheet" href="{{ asset('assetsf/css/animated.css') }}">
+    <link rel="stylesheet" href="{{ asset('assetsf/css/owl.css') }}">
+    
+    {% block styles %}{% endblock %}
+  </head>
+
+  <body>
+    <!-- Header -->
+    <header class="header-area header-sticky">
+      <div class="container">
+        <nav class="main-nav">
+          <a href="{{ path('app_front') }}" class="logo">
+            <h4>Edu<span>Play</span></h4>
+          </a>
+            </a>
+          <ul class="nav">
+            <li><a href="{{ path('app_front') }}">Home</a></li>
+            <li><a href="{{ path('app_front') }}">About Us</a></li>
+            <li><a href="{{ path('app_front') }}">Courses</a></li>
+            <li><a href="{{ path('app_front') }}">Forum</a></li>
+            <li><a href="{{ path('app_front') }}">Evaluation</a></li>
+            <li><a href="{{ path('app_front') }}">Games</a></li>
+            <li><a href="{{ path('app_front') }}">Events</a></li>
+          
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main Content Block -->
+    <main>
+      {% block body %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <p>&copy; 2025 EduPlay Co. All Rights Reserved.</p>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="{{ asset('vendorf/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('vendorf/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('assetsf/js/owl-carousel.js') }}"></script>
+    <script src="{{ asset('assetsf/js/animation.js') }}"></script>
+    <script src="{{ asset('assetsf/js/imagesloaded.js') }}"></script>
+    <script src="{{ asset('assetsf/js/templatemo-custom.js') }}"></script>
+
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

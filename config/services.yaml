@@ -1,0 +1,20 @@
+services:
+    # Register AuthenticationSuccessHandler as a service
+    App\Security\AuthenticationSuccessHandler:
+        arguments:
+            $urlGenerator: '@router.default'  # Inject the router service
+        tags:
+            - { name: 'kernel.event_listener', event: 'security.authentication.success', method: 'onAuthenticationSuccess' }
+
+    # Default configuration for services
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    # Makes classes in the `src/` directory available to be used as services
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
