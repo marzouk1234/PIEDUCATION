@@ -1,0 +1,22 @@
+{% extends 'back.html.twig' %}
+
+{% block title %}Modifier Résultat (Back-Office){% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1 class="mb-4 text-center" style="color: #FF8C42; font-weight: 600;">Modifier Résultat</h1>
+
+        <div class="card shadow-sm rounded p-4" style="background-color: #F9F9F9; border-color: #E0E0E0;">
+            {{ include('resultat/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+
+            <div class="d-flex justify-content-between mt-3">
+                <a href="{{ path('app_resultat_indexb') }}" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> Retour à la liste
+                </a>
+                {{ include('resultat/_delete_formb.html.twig') }}
+            </div>
+        </div>
+    </div>
+
+    {% include 'resultat/script_note.html.twig' %}
+{% endblock %}

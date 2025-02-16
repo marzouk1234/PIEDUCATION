@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un nouveau Résultat{% endblock %}
+
+{% block body %}
+    <h1 class="text-center" style="color: #FFA500; font-weight: bold;">Créer un nouveau Résultat</h1>
+
+    <div class="container mt-4 p-4 rounded shadow" style="background-color: #F8F9FA; border: 1px solid #D3D3D3; max-width: 600px;">
+        {{ include('resultat/_form.html.twig') }}
+    </div>
+
+    <div class="text-center mt-3">
+        <a href="{{ path('app_resultat_index') }}" class="btn btn-outline-secondary">Retour à la liste</a>
+    </div>
+
+    {% include 'resultat/script_note.html.twig' %}
+{% endblock %}

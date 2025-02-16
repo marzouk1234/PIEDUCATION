@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Evaluation index{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1 class="mb-4 text-center" style="color: #FF8C42; font-weight: 600;">Liste des Évaluations</h1> <!-- Titre en orange clair -->
+
+        <table class="table table-striped table-hover table-bordered shadow-sm rounded" style="background-color: #F9F9F9; border-color: #E0E0E0;">
+            <thead class="text-center" style="background-color: #4A90E2; color: #FFFFFF;"> <!-- En-tête en bleu clair -->
+                <tr>
+                    <th scope="col">Titre</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Type</th>
+                    <th scope="col" style="width: 200px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for evaluation in evaluations %}
+                <tr class="align-middle">
+                    <td>{{ evaluation.titre }}</td>
+                    <td class="text-center">{{ evaluation.date ? evaluation.date|date('d/m/Y') : 'N/A' }}</td>
+                    <td class="text-center">{{ evaluation.type }}</td>
+                    <td class="text-center" style="width: 200px;">
+                        <div class="d-flex justify-content-center">
+                            <a href="{{ path('app_eval_show', {'id': evaluation.id}) }}" class="btn btn-info btn-sm me-1" style="background-color: #4A90E2; border-color: #4A90E2;">
+                                <i class="bi bi-eye"></i> Voir
+                            </a>
+                            <a href="{{ path('app_eval_edit', {'id': evaluation.id}) }}" class="btn btn-warning btn-sm me-1" style="background-color: #FF8C42; border-color: #FF8C42;">
+                                <i class="bi bi-pencil"></i> Modifier
+                            </a>
+                            <form action="{{ path('app_eval_delete', {'id': evaluation.id}) }}" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette évaluation ?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ evaluation.id) }}">
+                                <button type="submit" class="btn btn-danger btn-sm" style="background-color: #FF5252; border-color: #FF5252;">
+                                    <i class="bi bi-trash"></i> Supprimer
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4" class="text-center text-muted">Aucun enregistrement trouvé</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="text-center mt-4">
+            <a href="{{ path('app_eval_new') }}" class="btn btn-success btn-lg" style="background-color: #50C878; border-color: #50C878;">
+                <i class="bi bi-plus-circle"></i> Créer une nouvelle évaluation
+            </a>
+        </div>
+    </div>
+{% endblock %}

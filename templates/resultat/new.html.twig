@@ -1,0 +1,89 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Resultat{% endblock %}
+
+{% block body %}
+    <h1 style="color: #FFA500; text-align: center; font-weight: bold;">Create new Resultat</h1>
+
+    <div class="container mt-4" style="max-width: 600px; background: #f8f9fa; padding: 20px; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);">
+        {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+
+        <div class="mb-3">
+            {{ form_label(form.note, 'Note', {'label_attr': {'class': 'form-label fw-bold'}}) }}
+            {{ form_widget(form.note, {'attr': {'class': 'form-control', 'placeholder': 'Entrez la note', 'min': 0, 'max': 20}}) }}
+            <small class="form-text text-muted">La note doit être comprise entre 0 et 20.</small>
+            {{ form_errors(form.note) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.dateCreation, 'Date de création', {'label_attr': {'class': 'form-label fw-bold'}}) }}
+            {{ form_widget(form.dateCreation, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.dateCreation) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.appreciation, 'Appréciation', {'label_attr': {'class': 'form-label fw-bold'}}) }}
+            {{ form_widget(form.appreciation, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.appreciation) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.Evaluation, 'Évaluation', {'label_attr': {'class': 'form-label fw-bold'}}) }}
+            {{ form_widget(form.Evaluation, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.Evaluation) }}
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary" style="background-color: #4A90E2; border-color: #4A90E2;">
+                <i class="bi bi-save"></i> {{ button_label|default('Enregistrer') }}
+            </button>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+
+    <div class="text-center mt-3">
+        <a href="{{ path('app_resultat_index') }}" class="btn btn-secondary">Back to list</a>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            function setAppreciation(note) {
+                if (note < 10) {
+                    return 'Insuffisant';
+                } else if (note >= 10 && note <= 13) {
+                    return 'Passable';
+                } else if (note > 13 && note <= 15) {
+                    return 'Bien';
+                } else if (note > 15 && note <= 18) {
+                    return 'Très bien';
+                } else if (note > 18) {
+                    return 'Excellent';
+                }
+            }
+
+            $('#resultat_note').on('input', function() {
+                var note = $(this).val();
+                if (note >= 0 && note <= 20) {
+                    $('#resultat_appreciation').val(setAppreciation(note));
+                }
+            });
+
+            $('form').on('submit', function(event) {
+                var note = $('#resultat_note').val();
+                var dateCreation = $('#resultat_dateCreation').val();
+                var appreciation = $('#resultat_appreciation').val();
+                var evaluation = $('#resultat_Evaluation').val();
+
+                if (note === '' || dateCreation === '' || appreciation === '' || evaluation === '') {
+                    alert('Tous les champs doivent être remplis.');
+                    event.preventDefault();
+                } else if (note < 0 || note > 20) {
+                    alert('La note doit être entre 0 et 20.');
+                    event.preventDefault();
+                }
+            });
+        });
+    </script>
+{% endblock %}
