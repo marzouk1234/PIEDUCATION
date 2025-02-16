@@ -1,0 +1,109 @@
+{% extends 'base15.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+
+<!-- ***** Hero Section Start ***** -->
+<div class="main-banner wow fadeIn" id="top" data-wow-duration="1s" data-wow-delay="0.5s">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <h1 class="text-white">{{ title }}</h1>
+        <p class="text-light">Remplissez le formulaire ci-dessous</p>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ***** Hero Section End ***** -->
+
+<!-- ***** Formulaire Section Start ***** -->
+<section class="contact-us section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card shadow-lg border-0 rounded-4 p-4">
+          
+          <!-- Titre amélioré -->
+          <h2 class="text-center text-primary mb-4">
+            <i class="fas fa-file-alt"></i> {{ title }}
+          </h2>
+
+          <!-- Gestion des erreurs globales -->
+          {% if form.vars.errors|length > 0 %}
+            <div class="alert alert-danger">
+              <h6><i class="fas fa-exclamation-circle"></i> Erreurs détectées :</h6>
+              <ul>
+                {% for error in form.vars.errors %}
+                  <li>{{ error.message }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          {% endif %}
+
+          {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+          <!-- Champ Sujet -->
+          <div class="mb-3">
+            <label class="form-label fw-bold">Sujet</label>
+            <div class="input-group">
+              <span class="input-group-text bg-light"><i class="fas fa-heading"></i></span>
+              {{ form_widget(form.sujet, {'attr': {'class': 'form-control', 'placeholder': 'Entrez le sujet...'}}) }}
+            </div>
+            {% for error in form.sujet.vars.errors %}
+              <div class="text-danger mt-1">{{ error.message }}</div>
+            {% endfor %}
+          </div>
+
+          <!-- Champ Auteur -->
+          <div class="mb-3">
+            <label class="form-label fw-bold">Auteur</label>
+            <div class="input-group">
+              <span class="input-group-text bg-light"><i class="fas fa-user"></i></span>
+              {{ form_widget(form.auteur, {'attr': {'class': 'form-control', 'placeholder': 'Nom de l’auteur...'}}) }}
+            </div>
+            {% for error in form.auteur.vars.errors %}
+              <div class="text-danger mt-1">{{ error.message }}</div>
+            {% endfor %}
+          </div>
+
+          <!-- Champ Date de publication -->
+          <div class="mb-3">
+            <label class="form-label fw-bold">Date de publication</label>
+            <div class="input-group">
+              <span class="input-group-text bg-light"><i class="fas fa-calendar-alt"></i></span>
+              {{ form_widget(form.date_pub, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            {% for error in form.date_pub.vars.errors %}
+              <div class="text-danger mt-1">{{ error.message }}</div>
+            {% endfor %}
+          </div>
+
+          <!-- Champ Contenu -->
+          <div class="mb-3">
+            <label class="form-label fw-bold">Contenu</label>
+            {{ form_widget(form.contenu, {'attr': {'class': 'form-control', 'rows': '5', 'placeholder': 'Écrivez ici...'}}) }}
+            {% for error in form.contenu.vars.errors %}
+              <div class="text-danger mt-1">{{ error.message }}</div>
+            {% endfor %}
+          </div>
+
+          <!-- Boutons d'action -->
+          <div class="d-flex justify-content-between mt-4">
+            <a href="{{ path('app_formp_list') }}" class="btn btn-secondary">
+              <i class="fas fa-arrow-left"></i> Retour
+            </a>
+            <button type="submit" class="btn btn-success">
+              <i class="fas fa-plus-circle"></i> Ajouter
+            </button>
+          </div>
+
+          {{ form_end(form) }}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ***** Formulaire Section End ***** -->
+
+{% endblock %}

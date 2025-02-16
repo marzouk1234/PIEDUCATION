@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <title>{% block title %}EduPlay{% endblock %}</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="{{ asset('assets/css/owl.css') }}">
+
+    <link rel="stylesheet" href="{{ asset('assets/css/fontawesome.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/templatemo-space-dynamic.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/animated.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/owl.css') }}">
+
+    {% block stylesheets %}
+    <style>
+        /* Correction : Empêcher le contenu d'être caché sous la navbar */
+        main {
+            padding-top: 100px; /* Ajustez selon la hauteur de la navbar */
+        }
+    </style>
+    {% endblock %}
+</head>
+
+<body>
+
+    <!-- ***** Preloader Start ***** -->
+    <div id="js-preloader" class="js-preloader">
+        <div class="preloader-inner">
+            <span class="dot"></span>
+            <div class="dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+    <!-- ***** Preloader End ***** -->
+
+    <!-- ***** Header Area Start ***** -->
+    <header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <!-- ***** Logo Start ***** -->
+                        <a href="{{ path('app_home') }}" class="logo">
+                            <h4>Edu<span>Play</span></h4>
+                        </a>
+                        <!-- ***** Logo End ***** -->
+                        <!-- ***** Menu Start ***** -->
+                        <ul class="nav">
+                            <li class="scroll-to-section"><a href="{{ path('app_home') }}">Home</a></li>
+                            <li class="scroll-to-section"><a href="#about">About Us</a></li>
+                            <li class="scroll-to-section"><a href="{{ path('app_formp_list') }}">Form</a></li>
+                             <li class="scroll-to-section"><a href="{{ path('app_aide_index') }}">aide</a></li>
+                            <a href="{{ path('app_game_new') }}" class="nav-link {{ app.request.get('_route') == 'app_game_new' ? 'active' : '' }}">jeux</a>
+                            <a href="{{ path('app_feedback_new') }}" class="nav-link {{ app.request.get('_route') == 'app_feedback_new' ? 'active' : '' }}">feedback</a>
+                           {# <li class="scroll-to-section"><a href="#blog">Evaluation</a></li>
+                            <li class="scroll-to-section"><a href="#contact">Jeux</a></li>
+                            <li class="scroll-to-section"><a href="#contact">Événement</a></li> #}
+                            <li class="scroll-to-section">
+                                <div class="main-red-button">
+                                    {# <a href="{{ path('app_contact') }}">Contact Now</a> #}
+                                </div>
+                            </li>
+                        </ul>
+                        <a class='menu-trigger'>
+                            <span>Menu</span>
+                        </a>
+                        <!-- ***** Menu End ***** -->
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- ***** Header Area End ***** -->
+
+    <!-- ***** Déplacement du contenu après la navbar ***** -->
+    <main>
+        {% block body %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 wow fadeIn" data-wow-duration="1s" data-wow-delay="0.25s">
+                    <p>© Copyright 2025 EduPlay Co. All Rights Reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="{{ asset('assets/vendor/jquery/jquery.min.js')}}"></script>
+
+    <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('assets/js/owl-carousel.js') }}"></script>
+    <script src="{{ asset('assets/js/animation.js') }}"></script>
+    <script src="{{ asset('assets/js/imagesloaded.js') }}"></script>
+    <script src="{{ asset('assets/js/templatemo-custom.js') }}"></script>
+
+    {% block javascripts %}{% endblock %}
+
+</body>
+</html>

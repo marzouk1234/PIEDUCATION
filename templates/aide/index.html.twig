@@ -1,0 +1,50 @@
+{% extends 'bac_web.html.twig' %}
+
+{% block title %}Aide index{% endblock %}
+
+{% block body %}
+    <h1>Aide index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Sujet du Formulaire</th> {# Nouvelle colonne #}
+                <th>Sujet</th>
+                <th>Description</th>
+                <th>Date_creation</th>
+                
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for aide in aides %}
+            <tr>
+                <td>{{ aide.id }}</td>
+                <td>
+                   {# Vérifier si une aide est liée à un formulaire #}
+                    {#{{ aide.form is not null and aide.form.sujet is not null ? aide.form.sujet : 'Aucun sujet' }}#}
+                </td>
+                <td>{{ aide.sujet }}</td>
+                <td>{{ aide.description }}</td>
+                <td>{{ aide.dateCreation ? aide.dateCreation|date('Y-m-d H:i:s') : '' }}</td>
+               
+               
+               
+
+               
+                <td>
+                    <a href="{{ path('app_aide_show', {'id': aide.id}) }}">show</a>
+                    <a href="{{ path('app_aide_edit', {'id': aide.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">No records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_aide_new') }}">Create new</a>
+{% endblock %}

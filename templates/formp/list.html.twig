@@ -1,0 +1,90 @@
+{% extends 'bac_web.html.twig' %}
+
+{% block title %}Liste des Formulaires{% endblock %}
+
+{% block body %}
+
+
+
+
+<!-- ***** Hero Section Start ***** -->
+<div class="main-banner wow fadeIn" id="top" data-wow-duration="1s" data-wow-delay="0.5s">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <h1 class="text-white"> Liste des Formulaires</h1>
+        <p class="text-light">Gérez vos formulaires facilement</p>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ***** Hero Section End ***** -->
+
+<section class="contact-us section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        
+        <!-- Bouton Ajouter -->
+        <div class="text-end mb-4">
+          <a href="{{ path('app_formp_new') }}" class="btn btn-primary btn-lg shadow-sm rounded-pill">
+            <i class="fas fa-plus-circle"></i> Ajouter un Formulaire
+          </a>
+        </div>
+
+        {% if formPs is defined and formPs is not empty %}
+          <div class="table-responsive">
+            <table class="table table-hover table-bordered text-center align-middle">
+              <thead class="table-dark">
+                <tr>
+                  <th>Sujet</th>
+                  <th>Auteur</th>
+                  <th>Date</th>
+                  <th>Contenu</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for i in formPs %}
+                  {% set hasError = i.sujet is empty or i.auteur is empty or i.contenu is empty %}
+                  <tr class="{% if hasError %}table-danger{% endif %}">
+                    <td class="fw-bold">{{ i.sujet }}</td>
+                    <td>{{ i.auteur }}</td>
+                    <td>{{ i.getDatePub()|date('d/m/Y') }}</td>
+                    <td class="text-truncate" style="max-width: 300px;">{{ i.contenu }}</td>
+                    <td>
+                      <!-- Bouton Modifier -->
+                      <a href="{{ path('app_formp_edit', {id: i.id}) }}" 
+                         class="btn btn-warning btn-sm text-dark fw-bold shadow-sm rounded-pill">
+                        <i class="fas fa-edit"></i> Modifier
+                      </a>
+
+                      <!-- Bouton Supprimer -->
+                      <a href="{{ path('app_formp_remove', {id: i.id}) }}" 
+                         class="btn btn-danger btn-sm fw-bold shadow-sm rounded-pill"
+                         onclick="return confirm('Voulez-vous vraiment supprimer ce formulaire ?');">
+                        <i class="fas fa-trash"></i> Supprimer
+                      </a>
+                    </td>
+                  </tr>
+                  {% if hasError %}
+                    <tr class="text-danger">
+                      <td colspan="5"><strong>Erreur :</strong> Veuillez vérifier les champs du formulaire.</td>
+                    </tr>
+                  {% endif %}
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% else %}
+          <div class="alert alert-info text-center">
+            <i class="fas fa-info-circle"></i> Aucun formulaire disponible.
+          </div>
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
