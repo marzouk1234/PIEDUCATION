@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'base2.html.twig' %}
 
 {% block title %}Détails de l'Évaluation{% endblock %}
 
@@ -32,15 +32,6 @@
                 <a href="{{ path('app_eval_index') }}" class="btn btn-secondary me-2">
                     <i class="bi bi-arrow-left"></i> Retour à la liste
                 </a>
-                <a href="{{ path('app_eval_edit', {'id': evaluation.id}) }}" class="btn btn-warning me-2">
-                    <i class="bi bi-pencil"></i> Modifier
-                </a>
-                <form action="{{ path('app_eval_delete', {'id': evaluation.id}) }}" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette évaluation ?');" style="display: inline;">
-                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ evaluation.id) }}">
-                    <button type="submit" class="btn btn-danger">
-                        <i class="bi bi-trash"></i> Supprimer
-                    </button>
-                </form>
             </div>
         </div>
     </div>

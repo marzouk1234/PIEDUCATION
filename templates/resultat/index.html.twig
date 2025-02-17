@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'base2.html.twig' %}
 
 {% block title %}Liste des Résultats{% endblock %}
 
@@ -26,15 +26,7 @@
                             <a href="{{ path('app_resultat_show', {'id': resultat.id}) }}" class="btn btn-info btn-sm me-1">
                                 <i class="bi bi-eye"></i> Voir
                             </a>
-                            <a href="{{ path('app_resultat_edit', {'id': resultat.id}) }}" class="btn btn-warning btn-sm me-1">
-                                <i class="bi bi-pencil"></i> Modifier
-                            </a>
-                            <form action="{{ path('app_resultat_delete', {'id': resultat.id}) }}" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce résultat ?');">
-                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ resultat.id) }}">
-                                <button type="submit" class="btn btn-danger btn-sm">
-                                    <i class="bi bi-trash"></i> Supprimer
-                                </button>
-                            </form>
+
                         </div>
                     </td>
                 </tr>
@@ -45,11 +37,5 @@
             {% endfor %}
             </tbody>
         </table>
-
-        <div class="text-center mt-4">
-            <a href="{{ path('app_resultat_new') }}" class="btn btn-success btn-lg">
-                <i class="bi bi-plus-circle"></i> Créer un nouveau résultat
-            </a>
-        </div>
     </div>
 {% endblock %}
