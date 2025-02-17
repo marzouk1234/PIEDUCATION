@@ -1,0 +1,31 @@
+{% extends 'basee.html.twig' %}
+
+{% block title %}Gestion des Cours{% endblock %}
+
+{% block body %}
+   <div class="course-list">
+        {% for cours in cours %}
+            <div class="course-item">
+                <h3>{{ cours.titre }}</h3>
+                <p><strong>Nombre de Chapitres:</strong> {{ cours.nbchapitre }}</p>
+                <p><strong>Description:</strong> {{ cours.description }}</p>
+                <p><strong>Date:</strong> {{ cours.date ? cours.date|date('Y-m-d') : '' }}</p>
+                <p>
+                    <strong>Fichier PDF:</strong>
+                    {% if cours.pdf %}
+                        <a href="{{ asset('uploads/pdf/' ~ cours.pdf) }}" target="_blank">Voir PDF</a>
+                    {% else %}
+                        Aucun fichier
+                    {% endif %}
+                </p>
+                <div class="course-actions">
+    <a href="{{ path('inscription_new', {'coursId': cours.id}) }}" class="btn btn-primary">Ajouter une inscription</a>
+
+                </div>
+            </div>
+        {% else %}
+            <p>Aucun cours trouvé</p>
+        {% endfor %}
+   </div>
+
+{% endblock %}

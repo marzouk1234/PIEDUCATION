@@ -1,0 +1,60 @@
+{% extends 'basee.html.twig' %}
+
+{% block title %}Liste des Cours{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    </div>
+    <div class="container mt-4">
+    <div class="d-flex justify-content-end mb-3">
+    <a href="{{ path('cours_indexb') }}" class="btn btn-primary">Go to Back</a>
+</div>
+    <h1 class="text-center mb-4">Liste des Cours</h1>
+
+    <div class="d-flex justify-content-end mb-3">
+        <a href="{{ path('cours_new') }}" class="btn btn-success">Créer un nouveau cours</a>
+    </div>
+
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Titre</th>
+                <th>Nombre de chapitres</th>
+                <th>Description</th>
+                <th>Date</th>
+                <th>Fichier PDF</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for cours in cours %}
+            <tr>
+                <td>{{ cours.id }}</td>
+                <td>{{ cours.titre }}</td>
+                <td>{{ cours.nbchapitre }}</td>
+                <td>{{ cours.description }}</td>
+                <td>{{ cours.date ? cours.date|date('Y-m-d') : 'N/A' }}</td>
+                <td>
+                    {% if cours.pdf %}
+                        <a href="{{ asset('uploads/pdf/' ~ cours.pdf) }}" target="_blank" class="btn btn-sm btn-info">Voir le PDF</a>
+                    {% else %}
+                        Aucun fichier
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ path('cours_show', {'id': cours.id}) }}" class="btn btn-sm btn-primary">Voir</a>
+                    <a href="{{ path('cours_edit', {'id': cours.id}) }}" class="btn btn-sm btn-warning">Modifier</a>
+                    <a href="{{ path('cours_delete', {'id': cours.id}) }}" class="btn btn-sm btn-danger"
+                       onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce cours ?');">Supprimer</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7" class="text-center">Aucun cours trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

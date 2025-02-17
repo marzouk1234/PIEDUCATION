@@ -37,6 +37,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\RoleHierarchyVoter;
 use Symfony\Component\Security\Core\Authorization\Voter\RoleVoter;
 use Symfony\Component\Security\Core\Role\RoleHierarchy;
 use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
+use Symfony\Component\Security\Core\Security as LegacySecurity;
 use Symfony\Component\Security\Core\User\ChainUserProvider;
 use Symfony\Component\Security\Core\User\InMemoryUserChecker;
 use Symfony\Component\Security\Core\User\InMemoryUserProvider;
@@ -95,6 +96,8 @@ return static function (ContainerConfigurator $container) {
                 abstract_arg('authenticators'),
             ])
         ->alias(Security::class, 'security.helper')
+        ->alias(LegacySecurity::class, 'security.helper')
+            ->deprecate('symfony/security-bundle', '6.2', 'The "%alias_id%" service alias is deprecated, use "'.Security::class.'" instead.')
 
         ->set('security.user_value_resolver', UserValueResolver::class)
             ->args([
@@ -304,13 +307,6 @@ return static function (ContainerConfigurator $container) {
             ->args([service('cache.security_is_granted_attribute_expression_language')->nullOnInvalid()])
 
         ->set('cache.security_is_granted_attribute_expression_language')
-            ->parent('cache.system')
-            ->tag('cache.pool')
-
-        ->set('security.is_csrf_token_valid_attribute_expression_language', BaseExpressionLanguage::class)
-            ->args([service('cache.security_is_csrf_token_valid_attribute_expression_language')->nullOnInvalid()])
-
-        ->set('cache.security_is_csrf_token_valid_attribute_expression_language')
             ->parent('cache.system')
             ->tag('cache.pool')
     ;

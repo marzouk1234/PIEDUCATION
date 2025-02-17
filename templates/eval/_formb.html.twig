@@ -1,0 +1,88 @@
+{# templates/eval/formb.html.twig #}
+
+{{ form_start(form, {'attr': {'id': 'evaluationForm', 'class': 'form-horizontal'}}) }}
+
+    <div class="mb-3">
+        {{ form_label(form.titre, 'Titre', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.titre, {'attr': {'class': 'form-control', 'placeholder': 'Entrez le titre'}}) }}
+        <small class="form-text text-muted">Le titre doit contenir au moins 3 caractères.</small>
+        {{ form_errors(form.titre) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.date, 'Date', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.date, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.date) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.type, 'Type', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.type, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.type) }}
+    </div>
+
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary" style="background-color: #4A90E2; border-color: #4A90E2;">
+            <i class="bi bi-save"></i> {{ button_label|default('Enregistrer') }}
+        </button>
+    </div>
+
+{{ form_end(form) }}
+
+{# Ajoutez jQuery et jQuery Validation #}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    // Configuration de la validation
+    $("#evaluationForm").validate({
+        rules: {
+            'evaluation[titre]': { // Nom du champ généré par Symfony
+                required: true,
+                minlength: 3,
+                regex: /^[a-zA-ZÀ-ÿ\s]+$/ // Validation regex pour les lettres et espaces
+            },
+            'evaluation[date]': {
+                required: true,
+                date: true // Validation de la date
+            },
+            'evaluation[type]': {
+                required: true // Champ obligatoire
+            }
+        },
+        messages: {
+            'evaluation[titre]': {
+                required: "Le titre est obligatoire.",
+                minlength: "Le titre doit contenir au moins 3 caractères.",
+                regex: "Le titre ne peut contenir que des lettres et des espaces."
+            },
+            'evaluation[date]': {
+                required: "La date est obligatoire.",
+                date: "La date doit être valide."
+            },
+            'evaluation[type]': {
+                required: "Le type est obligatoire."
+            }
+        },
+        errorClass: "is-invalid",
+        validClass: "is-valid",
+        errorPlacement: function(error, element) {
+            error.addClass('invalid-feedback');
+            element.closest('.mb-3').append(error);
+        },
+        highlight: function(element, errorClass, validClass) {
+            $(element).addClass(errorClass).removeClass(validClass);
+        },
+        unhighlight: function(element, errorClass, validClass) {
+            $(element).removeClass(errorClass).addClass(validClass);
+        }
+    });
+
+    // Ajoutez une méthode personnalisée pour la validation regex
+    $.validator.addMethod("regex", function(value, element, regexp) {
+        var re = new RegExp(regexp);
+        return this.optional(element) || re.test(value);
+    }, "Veuillez vérifier votre saisie.");
+});
+</script>

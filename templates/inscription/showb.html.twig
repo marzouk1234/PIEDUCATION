@@ -1,0 +1,16 @@
+{% extends 'backk.html.twig' %}
+
+{% block title %}Détails de l'Inscription{% endblock %}
+
+{% block body %}
+    <h1>Détails de l'Inscription</h1>
+
+    <ul>
+        <li><strong>ID:</strong> {{ inscription.id }}</li>
+        <li><strong>Date d'Inscription:</strong> {{ inscription.dateInscription ? inscription.dateInscription|date('Y-m-d H:i') : '' }}</li>
+        <li><strong>Cours:</strong> {{ inscription.cours ? inscription.cours.titre : '' }}</li>
+
+    </ul>
+
+    <a href="{{ path('inscription_indexb') }}" class="btn btn-secondary">Retour à la liste</a>
+{% endblock %}

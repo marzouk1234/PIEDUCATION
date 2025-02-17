@@ -20,9 +20,11 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
  */
 class RoleVoter implements CacheableVoterInterface
 {
-    public function __construct(
-        private string $prefix = 'ROLE_',
-    ) {
+    private string $prefix;
+
+    public function __construct(string $prefix = 'ROLE_')
+    {
+        $this->prefix = $prefix;
     }
 
     public function vote(TokenInterface $token, mixed $subject, array $attributes): int
@@ -36,8 +38,10 @@ class RoleVoter implements CacheableVoterInterface
             }
 
             $result = VoterInterface::ACCESS_DENIED;
-            if (\in_array($attribute, $roles, true)) {
-                return VoterInterface::ACCESS_GRANTED;
+            foreach ($roles as $role) {
+                if ($attribute === $role) {
+                    return VoterInterface::ACCESS_GRANTED;
+                }
             }
         }
 
@@ -54,7 +58,10 @@ class RoleVoter implements CacheableVoterInterface
         return true;
     }
 
-    protected function extractRoles(TokenInterface $token): array
+    /**
+     * @return array
+     */
+    protected function extractRoles(TokenInterface $token)
     {
         return $token->getRoleNames();
     }

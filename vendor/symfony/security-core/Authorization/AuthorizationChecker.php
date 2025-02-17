@@ -24,10 +24,17 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class AuthorizationChecker implements AuthorizationCheckerInterface
 {
-    public function __construct(
-        private TokenStorageInterface $tokenStorage,
-        private AccessDecisionManagerInterface $accessDecisionManager,
-    ) {
+    private TokenStorageInterface $tokenStorage;
+    private AccessDecisionManagerInterface $accessDecisionManager;
+
+    public function __construct(TokenStorageInterface $tokenStorage, AccessDecisionManagerInterface $accessDecisionManager, bool $exceptionOnNoToken = false)
+    {
+        if ($exceptionOnNoToken) {
+            throw new \LogicException(sprintf('Argument $exceptionOnNoToken of "%s()" must be set to "false".', __METHOD__));
+        }
+
+        $this->tokenStorage = $tokenStorage;
+        $this->accessDecisionManager = $accessDecisionManager;
     }
 
     final public function isGranted(mixed $attribute, mixed $subject = null): bool

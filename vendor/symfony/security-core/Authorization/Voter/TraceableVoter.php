@@ -24,10 +24,13 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
  */
 class TraceableVoter implements CacheableVoterInterface
 {
-    public function __construct(
-        private VoterInterface $voter,
-        private EventDispatcherInterface $eventDispatcher,
-    ) {
+    private VoterInterface $voter;
+    private EventDispatcherInterface $eventDispatcher;
+
+    public function __construct(VoterInterface $voter, EventDispatcherInterface $eventDispatcher)
+    {
+        $this->voter = $voter;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function vote(TokenInterface $token, mixed $subject, array $attributes): int

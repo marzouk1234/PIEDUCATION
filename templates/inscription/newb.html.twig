@@ -1,0 +1,16 @@
+{% extends 'backk.html.twig' %}
+
+{% block title %}Nouvelle Inscription{% endblock %}
+
+{% block body %}
+    <h1>Ajouter une Nouvelle Inscription</h1>
+
+    <h3>Cours: {{ cours.titre }}</h3>
+
+    {{ form_start(form) }}
+        {{ form_row(form.dateInscription) }}
+        <button class="btn btn-success">Ajouter l'inscription</button>
+    {{ form_end(form) }}
+
+    <a href="{{ path('inscription_indexb') }}" class="btn btn-secondary mt-3">Retour à la liste des inscriptions</a>
+{% endblock %}

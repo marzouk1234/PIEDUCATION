@@ -50,21 +50,27 @@ interface TokenInterface extends \Stringable
     /**
      * Sets the authenticated user in the token.
      *
+     * @return void
+     *
      * @throws \InvalidArgumentException
      */
-    public function setUser(UserInterface $user): void;
+    public function setUser(UserInterface $user);
 
     /**
      * Removes sensitive information from the token.
+     *
+     * @return void
      */
-    public function eraseCredentials(): void;
+    public function eraseCredentials();
 
     public function getAttributes(): array;
 
     /**
      * @param array $attributes The token attributes
+     *
+     * @return void
      */
-    public function setAttributes(array $attributes): void;
+    public function setAttributes(array $attributes);
 
     public function hasAttribute(string $name): bool;
 
@@ -73,7 +79,10 @@ interface TokenInterface extends \Stringable
      */
     public function getAttribute(string $name): mixed;
 
-    public function setAttribute(string $name, mixed $value): void;
+    /**
+     * @return void
+     */
+    public function setAttribute(string $name, mixed $value);
 
     /**
      * Returns all the necessary state of the object for serialization purposes.
