@@ -1,0 +1,11 @@
+{# templates/session/index.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Session{% endblock %}
+
+{% block body %}
+    <h1>Bienvenue, {{ user_email }}</h1>
+    <p>Nombre de visites : {{ nbre_visite }}</p>
+    <a href="{{ path('app_session_clear') }}">Réinitialiser la session</a>
+{% endblock %}

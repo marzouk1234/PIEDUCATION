@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\RegistrationFormType; // Import RegistrationFormType instead of UserType
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -70,4 +71,34 @@ final class AdminController extends AbstractController
 
         return $this->redirectToRoute('app_admin'); // Redirect to dashboard after deletion
     }
+    #[Route('/admin/search', name: 'admin_search', methods: ['GET'])]
+    public function search(Request $request, EntityManagerInterface $entityManager): JsonResponse
+    {
+        $email = $request->query->get('email', '');
+        $users = $entityManager->getRepository(User::class)->createQueryBuilder('u')
+            ->where('u.email LIKE :email')
+            ->setParameter('email', '%' . $email . '%')
+            ->getQuery()
+            ->getResult();
+    
+        $data = array_map(function (User $user) {
+            return [
+                'id' => $user->getId(),
+                'nom' => $user->getNom(),
+                'prenom' => $user->getPrenom(),
+                'email' => $user->getEmail(),
+                'roles' => $user->getRoles(),
+            ];
+        }, $users);
+    
+        return $this->json($data);
+    }
+    
+#[Route('/admin/csrf-token/{id}', name: 'app_user_csrf', methods: ['GET'])]
+public function getCsrfToken(int $id): JsonResponse
+{
+    return new JsonResponse(['token' => $this->csrfTokenManager->getToken('delete' . $id)->getValue()]);
+}
+
+
 }

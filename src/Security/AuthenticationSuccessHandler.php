@@ -21,7 +21,7 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
     {
         $user = $token->getUser();
 
-        // Redirect based on the user's role
+        // Rediriger selon le rôle de l'utilisateur
         if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
             return new RedirectResponse($this->urlGenerator->generate('app_admin'));
         } elseif (in_array('ROLE_ENS', $user->getRoles(), true)) {
@@ -30,7 +30,7 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
             return new RedirectResponse($this->urlGenerator->generate('app_etudiant'));
         }
 
-        // Default redirect
+        // Redirection par défaut
         return new RedirectResponse($this->urlGenerator->generate('app_front'));
     }
 }
