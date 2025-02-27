@@ -1,0 +1,183 @@
+{% extends 'bac_web.html.twig' %}
+
+{% block title %}Liste des Formulaires{% endblock %}
+
+{% block body %}
+
+<!-- ***** Hero Section Start ***** -->
+<div class="main-banner wow fadeIn" id="top" data-wow-duration="1s" data-wow-delay="0.5s">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <h1 class="text-white"> Liste des Formulaires</h1>
+        <p class="text-light">Gérez vos formulaires facilement</p>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ***** Hero Section End ***** -->
+
+<section class="contact-us section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+
+        {% if formPs is defined and formPs is not empty %}
+          <div class="table-responsive">
+            <table class="table table-hover table-bordered text-center align-middle">
+              <thead class="table-dark">
+                <tr>
+                  <th>Sujet</th>
+                  <th>Auteur</th>
+                  <th>Date</th>
+                  <th>Contenu</th>
+                  <th>Actions</th>
+                  <th>QR Code</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for i in formPs %}
+                  {% set hasError = i.sujet is empty or i.auteur is empty or i.contenu is empty %}
+                  <tr class="{% if hasError %}table-danger{% endif %}">
+                    <td class="fw-bold">{{ i.sujet }}</td>
+                    <td>{{ i.auteur }}</td>
+                    <td>{{ i.getDatePub()|date('d/m/Y') }}</td>
+                    <td class="text-truncate" style="max-width: 300px;">{{ i.contenu }}</td>
+                    <td>
+                      <!-- Bouton Modifier -->
+                      <a href="{{ path('app_formp_edit', {id: i.id}) }}" 
+                         class="original-button btn btn-sm btn-edit shadow-sm">
+                        Modifier
+                      </a>
+
+                      <!-- Bouton Supprimer -->
+                      <a href="{{ path('app_formp_remove', {id: i.id}) }}" 
+                         class="original-button btn btn-sm btn-delete shadow-sm"
+                         onclick="return confirm('Voulez-vous vraiment supprimer ce formulaire ?');">
+                        Supprimer
+                      </a>
+                    </td>
+                    <td>
+                      <!-- Bouton pour afficher/masquer le QR Code -->
+                      <button class="original-button btn btn-sm btn-qrcode shadow-sm toggle-qr" data-id="{{ i.id }}">
+                        <i class="fas fa-qrcode"></i> Afficher QR Code
+                      </button>
+
+                      <!-- QR Code caché par défaut -->
+                      <div id="qrcode-{{ i.id }}" class="qr-code-container mt-2">
+                        <img src="{{ path('form_qrcode', {'id': i.id}) }}" alt="QR Code">
+                      </div>
+                    </td>
+                  </tr>
+                  {% if hasError %}
+                    <tr class="text-danger">
+                      <td colspan="6"><strong>Erreur :</strong> Veuillez vérifier les champs du formulaire.</td>
+                    </tr>
+                  {% endif %}
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% else %}
+          <div class="alert alert-info text-center">
+            <i class="fas fa-info-circle"></i> Aucun formulaire disponible.
+          </div>
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Bouton Ajouter -->
+<div class="text-end mb-4">
+  <a href="{{ path('app_formp_new') }}" class="original-button btn btn-lg btn-add shadow-sm">
+    <i class="fas fa-plus-circle"></i> Ajouter un Formulaire
+  </a>
+</div>
+
+<!-- Styles pour Animation des Boutons -->
+<style>
+  .original-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    width: 140px;
+    height: 40px;
+    border: none;
+    transition: 0.3s;
+  }
+
+  /* Modifier - Orange */
+  .btn-edit {
+    background-color: #ff9800;
+  }
+
+  .btn-edit:hover {
+    background-color: #e68900;
+    transform: scale(1.05);
+  }
+
+  /* Supprimer - Rouge */
+  .btn-delete {
+    background-color: #e53935;
+  }
+
+  .btn-delete:hover {
+    background-color: #c62828;
+    transform: scale(1.05);
+  }
+
+  /* Ajouter - Bleu */
+  .btn-add {
+    background-color: #2196f3;
+  }
+
+  .btn-add:hover {
+    background-color: #1976d2;
+    transform: scale(1.05);
+  }
+
+  /* QR Code - Vert */
+  .btn-qrcode {
+    background-color: #4caf50;
+  }
+
+  .btn-qrcode:hover {
+    background-color: #388e3c;
+    transform: scale(1.05);
+  }
+
+  /* Style pour QR Code */
+  .qr-code-container {
+    display: none;
+    transition: all 0.3s ease-in-out;
+  }
+</style>
+
+<!-- Script JavaScript pour afficher/masquer le QR Code -->
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll(".toggle-qr").forEach(button => {
+      button.addEventListener("click", function() {
+        let id = this.getAttribute("data-id");
+        let qrCodeDiv = document.getElementById("qrcode-" + id);
+        if (qrCodeDiv.style.display === "none" || qrCodeDiv.style.display === "") {
+          qrCodeDiv.style.display = "block";
+          this.innerHTML = '<i class="fas fa-qrcode"></i> Masquer QR Code';
+        } else {
+          qrCodeDiv.style.display = "none";
+          this.innerHTML = '<i class="fas fa-qrcode"></i> Afficher QR Code';
+        }
+      });
+    });
+  });
+</script>
+
+{% endblock %}

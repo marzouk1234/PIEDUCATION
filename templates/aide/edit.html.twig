@@ -1,0 +1,13 @@
+{% extends 'bac_web.html.twig' %}
+
+{% block title %}Edit Aide{% endblock %}
+
+{% block body %}
+    <h1>Edit Aide</h1>
+
+    {{ include('aide/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_aide_index') }}">back to list</a>
+
+    {{ include('aide/_delete_form.html.twig') }}
+{% endblock %}

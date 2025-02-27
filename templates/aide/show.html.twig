@@ -1,0 +1,148 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails de l'Aide{% endblock %}
+
+{% block stylesheets %}
+<style>
+    /* Styles existants */
+    body {
+        background-color: #f8f9fa;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: 50px auto;
+        padding: 40px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        text-align: center;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 35px;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0 10px;
+        background: white;
+    }
+
+    .table th, .table td {
+        padding: 18px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .table th {
+        background: #007bff;
+        color: white;
+        text-align: left;
+        border-radius: 8px 8px 0 0;
+    }
+
+    .table tr {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .table td {
+        font-size: 16px;
+        color: #555;
+    }
+
+    .btn-container {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 30px;
+    }
+
+    .btn-custom {
+        display: inline-block;
+        padding: 12px 25px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: 500;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        border: none;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .btn-warning {
+        background-color: #ffc107;
+        color: black;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .btn-custom:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-custom:active {
+        transform: scale(0.95);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .table tr:hover {
+        background-color: #f1f1f1;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .table tr {
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Détails de l'Aide</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ aide.id }}</td>
+            </tr>
+            <tr>
+                <th>Sujet</th>
+                <td>{{ aide.sujet }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ aide.description }}</td>
+            </tr>
+            <tr>
+                <th>Date de création</th>
+                <td>{{ aide.dateCreation ? aide.dateCreation|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Sujet du Formulaire</th>
+                <td>{{ aide.form.sujet }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="btn-container">
+        <a href="{{ path('app_aide_index') }}" class="btn-custom btn-primary">⬅ Retour à la liste</a>
+        <a href="{{ path('app_aide_edit', {'id': aide.id}) }}" class="btn-custom btn-warning">✏ Modifier</a>
+        {{ include('aide/_delete_form.html.twig', {'class': 'btn-custom btn-danger'}) }}
+    </div>
+</div>
+{% endblock %}

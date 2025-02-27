@@ -1,0 +1,131 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer une Aide{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .form-container {
+            max-width: 800px;
+            margin: auto;
+        }
+
+        /* Animation des boutons */
+        .btn-animated {
+            transition: all 0.3s ease-in-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-animated:hover {
+            transform: translateY(-3px);
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-animated:active {
+            transform: translateY(1px);
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+<!-- ***** Hero Section Start ***** -->
+<div class="main-banner wow fadeIn" id="top" data-wow-duration="1s" data-wow-delay="0.5s">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <h1 class="text-white">Créer une Aide</h1>
+        <p class="text-light">Remplissez le formulaire ci-dessous</p>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ***** Hero Section End ***** -->
+
+<!-- ***** Formulaire Section Start ***** -->
+<section class="contact-us section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card shadow-lg border-0 rounded-4 p-4 form-container">
+          
+          <!-- Titre amélioré -->
+          <h2 class="text-center text-primary mb-4">
+            <i class="fas fa-life-ring"></i> Créer une Aide
+          </h2>
+
+          <!-- Gestion des erreurs globales -->
+          {% if form.vars.errors|length > 0 %}
+            <div class="alert alert-danger">
+              <h6><i class="fas fa-exclamation-circle"></i> Erreurs détectées :</h6>
+              <ul class="mb-0">
+                {% for error in form.vars.errors %}
+                  <li>{{ error.message }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          {% endif %}
+
+          {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+          <!-- Champs du formulaire -->
+          {% set fields = {
+            'sujet': { 'icon': 'fa-heading', 'placeholder': 'Entrez le sujet...' },
+            'description': { 'icon': '', 'placeholder': 'Écrivez la description ici...', 'type': 'textarea' },
+            'date_creation': { 'icon': 'fa-calendar-alt' },
+            'form': { 'icon': 'fa-file-alt', 'type': 'select' }
+          } %}
+
+          {% for field, options in fields %}
+            <div class="mb-3">
+              <label class="form-label fw-bold">{{ form[field].vars.label|default(field|capitalize) }}</label>
+              <div class="input-group">
+                {% if options.icon %}
+                  <span class="input-group-text bg-light"><i class="fas {{ options.icon }}"></i></span>
+                {% endif %}
+                {{ form_widget(form[field], {'attr': {'class': 'form-control', 'placeholder': options.placeholder|default('')}}) }}
+              </div>
+              {% for error in form[field].vars.errors %}
+                <div class="text-danger mt-1">{{ error.message }}</div>
+              {% endfor %}
+            </div>
+          {% endfor %}
+
+          <!-- Boutons d'action avec animation -->
+          <div class="d-flex justify-content-between mt-4">
+            <a href="{{ path('app_aide_index') }}" class="btn btn-secondary btn-animated">
+              <i class="fas fa-arrow-left"></i> Retour
+            </a>
+            <button type="submit" class="btn btn-success btn-animated">
+              <i class="fas fa-check-circle"></i> Enregistrer
+            </button>
+          </div>
+
+          {{ form_end(form) }}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ***** Formulaire Section End ***** -->
+
+{% endblock %}
+
+{% block javascripts %}
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const buttons = document.querySelectorAll(".btn-animated");
+
+        buttons.forEach(button => {
+            button.addEventListener("mouseover", () => {
+                button.classList.add("shadow-lg");
+            });
+
+            button.addEventListener("mouseleave", () => {
+                button.classList.remove("shadow-lg");
+            });
+        });
+    });
+  </script>
+{% endblock %}
