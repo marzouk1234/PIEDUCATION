@@ -1,0 +1,108 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau Ticket - EDUPLAY{% endblock %}
+
+{% block navbar %}{{ parent() }}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0"><i class="fas fa-ticket-alt me-2"></i>Nouveau Ticket</h3>
+        </div>
+        
+        <div class="card-body">
+            {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+            
+                <div class="row g-4">
+                    <!-- Nom et Email -->
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            {{ form_widget(form.Nom, {'attr': {
+                                'class': 'form-control',
+                                'placeholder': ' '
+                            }}) }}
+                            {{ form_label(form.Nom, 'Nom complet', {'label_attr': {'class': 'form-label'}}) }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            {{ form_widget(form.Email, {'attr': {
+                                'class': 'form-control',
+                                'placeholder': ' '
+                            }}) }}
+                            {{ form_label(form.Email, 'Adresse email', {'label_attr': {'class': 'form-label'}}) }}
+                        </div>
+                    </div>
+
+                    <!-- Prix et Date d'achat -->
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <div class="input-group">
+                                {{ form_widget(form.Prix, {'attr': {
+                                    'class': 'form-control',
+                                    'placeholder': '00.00'
+                                }}) }}
+                                <span class="input-group-text">€</span>
+                            </div>
+                            {{ form_label(form.Prix, 'Prix', {'label_attr': {'class': 'form-label'}}) }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            {{ form_widget(form.PuchaseDate, {'attr': {
+                                'class': 'form-control flatpickr',
+                                'placeholder': ' '
+                            }}) }}
+                            {{ form_label(form.PuchaseDate, 'Date d\'achat', {'label_attr': {'class': 'form-label'}}) }}
+                        </div>
+                    </div>
+
+                    <!-- Sélection d'événement -->
+                    <div class="col-12">
+                        <div class="form-floating">
+                            {{ form_widget(form.Event, {'attr': {
+                                'class': 'form-select'
+                            }}) }}
+                            {{ form_label(form.Event, 'Événement associé', {'label_attr': {'class': 'form-label'}}) }}
+                        </div>
+                    </div>
+
+                    <!-- Bouton de soumission -->
+                    <div class="col-12 text-end">
+                        <button class="btn btn-lg btn-primary px-5">
+                            <i class="fas fa-save me-2"></i>{{ button_label|default('Créer le ticket') }}
+                        </button>
+                    </div>
+                </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a href="{{ path('app_ticket_index') }}" class="text-decoration-none">
+            <i class="fas fa-arrow-left me-2"></i>Retour à la liste
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+{{ parent() }}
+<!-- Configuration Flatpickr -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://npmcdn.com/flatpickr/dist/l10n/fr.js"></script>
+<script>
+    flatpickr('.flatpickr', {
+        enableTime: true,
+        dateFormat: "Y-m-d H:i",
+        locale: "fr",
+        time_24hr: true
+    });
+</script>
+{% endblock %}

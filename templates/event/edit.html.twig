@@ -1,0 +1,92 @@
+{% extends 'back.html.twig' %}
+
+{% block title %}Modifier l'événement - EDUPLAY{% endblock %}
+
+{% block body %}
+    {# Espacement important sous la navbar fixe #}
+    <div class="container" style="padding-top: 120px;">
+
+        <h1 class="mb-4 text-primary">Modifier Evenement</h1>
+
+        {# Carte contenant le formulaire #}
+        <div class="card shadow-lg">
+            <div class="card-body">
+            {{ form_start(form) }}
+                
+                {# Groupe de champs Nom et Date #}
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        {{ form_label(form.Nom, null, {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.Nom, {'attr': {
+                            'class': 'form-control form-control-lg',
+                            'placeholder': 'Entrez le nom de l\'événement'
+                        }}) }}
+                    </div>
+                    
+                    <div class="col-md-6">
+                        {{ form_label(form.Date, null, {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.Date, {'attr': {
+                            'class': 'form-control flatpickr',
+                            'placeholder': 'Sélectionnez une date'
+                        }}) }}
+                    </div>
+                </div>
+
+                {# Champ Description #}
+                <div class="mb-4">
+                    {{ form_label(form.Description, null, {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.Description, {'attr': {
+                        'class': 'form-control',
+                        'rows': 5,
+                        'style': 'resize: vertical;',
+                        'placeholder': 'Décrivez votre événement...'
+                    }}) }}
+                </div>
+
+                {# Boutons d'action #}
+                <div class="d-flex justify-content-end gap-2">
+                    <a href="{{ path('app_event_index') }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left"></i> Retour à la liste
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Mettre à jour
+                    </button>
+                    {{ include('event/_delete_form.html.twig') }}
+                </div>
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        /* Ajustements pour la navbar fixe */
+        body {
+            padding-top: 100px; /* Correspond à la hauteur de la navbar */
+        }
+        
+        /* Styles supplémentaires */
+        .form-label {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .flatpickr-input {
+            background: #fff !important;
+            cursor: pointer;
+        }
+        
+        .card {
+            border-radius: 15px;
+        }
+        
+        /* Assurance que le conteneur ne dépasse pas */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+    </style>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block navbar %}{{ parent() }}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0"><i class="fas fa-calendar-plus me-2"></i>Nouvel Événement</h3>
+        </div>
+        
+        <div class="card-body">
+            {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+            
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            {{ form_widget(form.Nom, {'attr': {'class': 'form-control', 'placeholder': ' '}}) }}
+                            {{ form_label(form.Nom, 'Nom', {'label_attr': {'class': 'form-label'}}) }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            {{ form_widget(form.Date, {'attr': {'class': 'form-control flatpickr'}}) }}
+                            {{ form_label(form.Date, 'Date', {'label_attr': {'class': 'form-label'}}) }}
+                        </div>
+                       
+                    </div>
+
+                    <div class="col-12">
+                        <div class="form-floating">
+                            {{ form_widget(form.Description, {'attr': {'class': 'form-control', 'style': 'height: 150px', 'placeholder': ' '}}) }}
+                            {{ form_label(form.Description, 'Description', {'label_attr': {'class': 'form-label'}}) }}
+                        </div>
+                    </div>
+
+                    <div class="col-12 text-end">
+                        <button class="btn btn-lg btn-primary px-5">
+                            <i class="fas fa-save me-2"></i>{{ button_label|default('Enregistrer') }}
+                        </button>
+                    </div>
+                </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a href="{{ path('app_event_index') }}" class="text-decoration-none">
+            <i class="fas fa-arrow-left me-2"></i>Retour à la liste
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+{{ parent() }}
+<!-- Ajoutez un sélecteur de date -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script>
+    flatpickr('.flatpickr', {
+        enableTime: true,
+        dateFormat: "Y-m-d H:i",
+        locale: "fr"
+    });
+</script>
+{% endblock %}
