@@ -13,13 +13,7 @@
                             <h6>Welcome to EduPlay</h6>
                             <h2>Your Gateway ToLife- <em>Long E-Learning</em></h2>
                             <p>EduPlay-Your Trusted Platform For Professional E-Learning. </p>
-                            {% if app.user %}
-                                <p>Hello, {{ app.user.userIdentifier }}</p>
-                                <p><a href="{{ path('app_logout') }}">Logout</a></p>
-                            {% else %}
-                                <p><a href="{{ path('app_login') }}">Login</a></p>
-                                <p><a href="{{ path('app_register') }}">Sign Up</a></p>
-                            {% endif %}
+                            
                         </div>
                     </div>
                     <div class="col-lg-6">

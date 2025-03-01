@@ -1,0 +1,65 @@
+{% extends 'front.html.twig' %}
+
+{% block title %}My Profile - Cours{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg p-4 border-0 rounded">
+                <div class="text-center">
+                    <h2 class="mb-3">My Profile</h2>
+                    
+                    {% for message in app.flashes('success') %}
+                        <div class="alert alert-success">{{ message }}</div>
+                    {% endfor %}
+                    
+                    <!-- Profile Picture -->
+                    <div class="profile-pic mb-4">
+                        <img src="{{ asset('assetsf/images/default-avatar.png') }}" class="rounded-circle" width="120" height="120" alt="Profile Picture">
+                        <input type="file" id="profilePic" class="d-none">
+                        <button class="btn btn-outline-primary btn-sm mt-2" onclick="document.getElementById('profilePic').click();">
+                            Change Picture
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Profile Form -->
+                <div class="card-body">
+                    {{ form_start(form) }}
+                        <div class="mb-3">
+                            {{ form_label(form.email, 'Email', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder': 'Enter your email'}}) }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_label(form.nom, 'Last Name', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.nom, {'attr': {'class': 'form-control', 'placeholder': 'Enter your last name'}}) }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_label(form.prenom, 'First Name', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.prenom, {'attr': {'class': 'form-control', 'placeholder': 'Enter your first name'}}) }}
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" id="saveButton" class="btn btn-success w-100">
+                                <span id="saveText">Save Changes</span>
+                                <span id="loadingSpinner" class="spinner-border spinner-border-sm d-none"></span>
+                            </button>
+                        </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript for Button Loading Effect -->
+<script>
+    document.getElementById('saveButton').addEventListener('click', function() {
+        document.getElementById('saveText').classList.add('d-none');
+        document.getElementById('loadingSpinner').classList.remove('d-none');
+    });
+</script>
+{% endblock %}

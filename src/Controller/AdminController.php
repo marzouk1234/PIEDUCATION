@@ -22,11 +22,18 @@ final class AdminController extends AbstractController
         // Fetch all users
         $users = $entityManager->getRepository(User::class)->findAll();
 
+        // Tri des utilisateurs par nom (ordre alphabétique)
+        usort($users, function($a, $b) {
+            return strcmp($a->getNom(), $b->getNom());  // Tri par nom
+            // Ou tu peux utiliser $a->getPrenom() si tu préfères trier par prénom
+        });
+
         return $this->render('admin/index.html.twig', [
             'controller_name' => 'AdminController',
             'users' => $users,
         ]);
     }
+
 
     #[Route('/edit/{id}', name: 'app_user_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
@@ -99,6 +106,35 @@ public function getCsrfToken(int $id): JsonResponse
 {
     return new JsonResponse(['token' => $this->csrfTokenManager->getToken('delete' . $id)->getValue()]);
 }
+#[Route('/admin/stats', name: 'admin_stats', methods: ['GET'])]
+public function stats(EntityManagerInterface $entityManager): JsonResponse
+{
+    $users = $entityManager->getRepository(User::class)->findAll();
 
+    $ageStats = [
+        '0-18' => 0,
+        '19-30' => 0,
+        '31-50' => 0,
+        '51+'   => 0,
+    ];
+
+    foreach ($users as $user) {
+        $age = $user->getAge();
+        if ($age === null) {
+            continue; // Ignore si dateNaissance non définie
+        }
+        if ($age <= 18) {
+            $ageStats['0-18']++;
+        } elseif ($age <= 30) {
+            $ageStats['19-30']++;
+        } elseif ($age <= 50) {
+            $ageStats['31-50']++;
+        } else {
+            $ageStats['51+']++;
+        }
+    }
+
+    return $this->json($ageStats);
+}
 
 }

@@ -1,21 +1,42 @@
 services:
-    # Register AuthenticationSuccessHandler as a service
-    App\Security\AuthenticationSuccessHandler:
-        arguments:
-            $urlGenerator: '@router.default'  # Inject the router service
-        tags:
-            - { name: 'kernel.event_listener', event: 'security.authentication.success', method: 'onAuthenticationSuccess' }
-
-    # Default configuration for services
     _defaults:
-        autowire: true      # Automatically injects dependencies in your services
-        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        autowire: true
+        autoconfigure: true
 
-    # Makes classes in the `src/` directory available to be used as services
     App\:
         resource: '../src/'
         exclude:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
-       
+
+    # Register custom ClientRegistry for OAuth2 clients
+    App\Security\ClientRegistry:
+        arguments:
+            $clients: !tagged_iterator knpu.oauth2.client
+
+    # Register AuthenticationSuccessHandler as a service and event listener
+    App\Security\AuthenticationSuccessHandler:
+        arguments:
+            $urlGenerator: '@router'
+        tags:
+            - { name: 'kernel.event_listener', event: 'security.interactive_login', method: 'onInteractiveLogin' }
+            - { name: 'kernel.event_listener', event: 'security.authentication.success', method: 'onAuthenticationSuccessEvent' }
+
+
+
+    # Inject the OAuth client registry service into GoogleAuthenticator
+    App\Security\GoogleAuthenticator:
+        arguments:
+            $clientRegistry: '@knpu.oauth2.registry'
+            $router: '@router'
+            $entityManager: '@doctrine.orm.entity_manager'
+
+    # 🛠️ Configure Symfony HTTP Client with SSL verification disabled (TEMPORARY)
+    http_client_disabled_ssl:
+        class: Symfony\Contracts\HttpClient\HttpClientInterface
+        factory: ['Symfony\Component\HttpClient\HttpClient', 'create']
+        arguments:
+            -
+                verify_peer: false  # Disable SSL certificate verification (TEMPORARY)
+                verify_host: false  # Disable SSL hostname verification (TEMPORARY)

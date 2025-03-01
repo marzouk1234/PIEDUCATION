@@ -204,5 +204,16 @@ public function setPlainPassword(?string $plainPassword): self
 
     return $this;
 }
+public function getAge(): ?int
+{
+    if ($this->dateNaissance === null) {
+        return null;
+    }
+    $today = new \DateTime();
+    return $this->dateNaissance->diff($today)->y;
+}
+
+
+
 
 }

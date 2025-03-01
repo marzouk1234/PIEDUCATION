@@ -11,8 +11,71 @@
     <link rel="stylesheet" href="{{ asset('assetsf/css/templatemo-space-dynamic.css') }}">
     <link rel="stylesheet" href="{{ asset('assetsf/css/animated.css') }}">
     <link rel="stylesheet" href="{{ asset('assetsf/css/owl.css') }}">
-    
+
     {% block styles %}{% endblock %}
+
+    <style>
+      .header-area {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        background-color: #fff;
+        box-shadow: 0 4px 2px -2px gray;
+      }
+
+      .main-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .nav {
+        list-style-type: none;
+        display: flex;
+      }
+
+      .nav li {
+        margin-right: 15px;
+      }
+
+      .nav a {
+        text-decoration: none;
+        color: #333;
+      }
+
+      .user-info {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        margin-left: auto;
+      }
+
+      .user-buttons {
+        display: flex;
+        gap: 10px; /* Space between the buttons */
+      }
+
+      .btn-small {
+        font-size: 12px;
+        padding: 5px 10px;
+      }
+
+      .user-info p {
+        margin: 0;
+        text-align: right;
+      }
+
+      @media (max-width: 768px) {
+        .user-buttons {
+          flex-direction: column;
+        }
+
+        .btn-small {
+          font-size: 10px;
+          padding: 5px 8px;
+        }
+      }
+    </style>
   </head>
 
   <body>
@@ -23,8 +86,32 @@
           <a href="{{ path('app_front') }}" class="logo">
             <h4>Edu<span>Play</span></h4>
           </a>
-            </a>
           <ul class="nav">
+            {% if app.user %}
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
+            <i class="fas fa-user-circle"></i> {{ app.user.prenom }}
+        </a>
+        <ul class="dropdown-menu">
+            {% if 'ROLE_ETU' in app.user.roles %}
+                <li><a class="dropdown-item" href="{{ path('app_profile') }}"><i class="fas fa-user-edit"></i> Student Profile</a></li>
+            {% endif %}
+            
+            {% if 'ROLE_ENS' in app.user.roles %}
+                <li><a class="dropdown-item" href="{{ path('app_cours_profile') }}"><i class="fas fa-user-edit"></i> Teacher Profile</a></li>
+            {% endif %}
+            
+            
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item text-danger" href="{{ path('app_logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+    </li>
+{% else %}
+    <li><a href="{{ path('app_login') }}" class="btn btn-primary text-white px-3 rounded-pill"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+    <li><a href="{{ path('app_register') }}" class="btn btn-secondary text-white px-3 rounded-pill">Sign Up</a></li>
+{% endif %}
+
+
             <li><a href="{{ path('app_front') }}">Home</a></li>
             <li><a href="{{ path('app_front') }}">About Us</a></li>
             <li><a href="{{ path('app_front') }}">Courses</a></li>
@@ -32,7 +119,6 @@
             <li><a href="{{ path('app_front') }}">Evaluation</a></li>
             <li><a href="{{ path('app_front') }}">Games</a></li>
             <li><a href="{{ path('app_front') }}">Events</a></li>
-          
           </ul>
         </nav>
       </div>
