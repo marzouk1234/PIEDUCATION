@@ -212,8 +212,19 @@ public function getAge(): ?int
     $today = new \DateTime();
     return $this->dateNaissance->diff($today)->y;
 }
+#[ORM\Column(type: "bigint", nullable: true)]
+private ?int $tel = null;
 
+public function gettel(): ?int
+{
+    return $this->tel;
+}
 
+public function settel(?int $numTel): self
+{
+    $this->tel = $tel;
+    return $this;
+}
 
 
 }
