@@ -10,10 +10,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Service\InfobipSmsService; 
 
 #[Route('/ticket')]
 final class TicketController extends AbstractController
 {
+    private $smsService;
+    public function __construct(InfobipSmsService $smsService) {
+        $this->smsService = $smsService;
+        
+    }
     #[Route(name: 'app_ticket_index', methods: ['GET'])]
     public function index(TicketRepository $ticketRepository): Response
     {
@@ -32,6 +38,10 @@ final class TicketController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($ticket);
             $entityManager->flush();
+            $phoneNumber = '21692299012';
+            $message = 'Votre ticket a été créée avec succès !';
+            $this->smsService->sendSms($phoneNumber, $message);
+
 
             return $this->redirectToRoute('app_ticket_index', [], Response::HTTP_SEE_OTHER);
         }

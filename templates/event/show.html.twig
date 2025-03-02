@@ -1,34 +1,129 @@
-{% extends 'back.html.twig' %}
+{% extends 'base.html.twig' %}
 
-{% block title %}Event{% endblock %}
+{% block title %}{{ event.Nom }} - EDUPLAY{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        /* Correction du header */
+        main {
+            padding-top: 100px; /* Ajustez selon votre header */
+        }
+
+        .event-title {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .event-date {
+            font-size: 1.2rem;
+            color: #6c757d;
+            margin-bottom: 2rem;
+        }
+
+        .vote-buttons {
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .btn-vote {
+            font-size: 2.5rem;
+            transition: all 0.3s ease;
+            border: none;
+            background: none;
+            padding: 0 1.5rem;
+        }
+
+        .btn-like.active {
+            color: #28a745;
+            animation: bounce 0.5s;
+        }
+
+        .btn-dislike.active {
+            color: #dc3545;
+            animation: bounce 0.5s;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+{% endblock %}
 
 {% block body %}
-    <h1>Event</h1>
+<main>
+    <div class="container">
+        <!-- Titre et Date -->
+        <div class="text-center mb-5">
+            <h1 class="event-title">{{ event.Nom }}</h1>
+            <div class="event-date">
+                <i class="bi bi-calendar-event"></i>
+                {{ event.Date|date('d/m/Y H:i') }}
+            </div>
+        </div>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ event.id }}</td>
-            </tr>
-            <tr>
-                <th>Nom</th>
-                <td>{{ event.Nom }}</td>
-            </tr>
-            <tr>
-                <th>Date</th>
-                <td>{{ event.Date ? event.Date|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ event.Description }}</td>
-            </tr>
-        </tbody>
-    </table>
+        <!-- Description -->
+        <div class="card shadow-sm mb-5">
+            <div class="card-body">
+                <h3 class="h4 text-muted mb-4">
+                    <i class="bi bi-journal-text"></i> Description
+                </h3>
+                <p class="lead">{{ event.Description }}</p>
+            </div>
+        </div>
 
-    <a href="{{ path('app_event_index') }}">back to list</a>
+        <!-- Boutons Like/Dislike -->
+        <div class="vote-buttons">
+            <button class="btn-like btn-vote" onclick="toggleVote(this)">
+                <i class="bi bi-hand-thumbs-up"></i>
+            </button>
+            <button class="btn-dislike btn-vote" onclick="toggleVote(this)">
+                <i class="bi bi-hand-thumbs-down"></i>
+            </button>
+        </div>
 
-    <a href="{{ path('app_event_edit', {'id': event.id}) }}">edit</a>
+        <!-- Bouton Retour -->
+        <div class="text-center mt-5">
+            <a href="{{ path('app_event_index') }}" class="btn btn-primary btn-lg">
+                <i class="bi bi-arrow-left"></i> Retour aux événements
+            </a>
+        </div>
+    </div>
+</main>
+{% endblock %}
 
-    {{ include('event/_delete_form.html.twig') }}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        // Configuration du localStorage
+        const eventId = "event-{{ event.id }}";
+        
+        // Charger l'état existant
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedVote = localStorage.getItem(eventId);
+            if(savedVote) {
+                const btn = document.querySelector(`.btn-${savedVote}`);
+                btn.classList.add('active');
+            }
+        });
+
+        // Gestion des clics
+        function toggleVote(clickedBtn) {
+            const isLike = clickedBtn.classList.contains('btn-like');
+            const oppositeBtn = document.querySelector(isLike ? '.btn-dislike' : '.btn-like');
+
+            // Toggle l'état actif
+            clickedBtn.classList.toggle('active');
+            oppositeBtn.classList.remove('active');
+
+            // Sauvegarder dans localStorage
+            if(clickedBtn.classList.contains('active')) {
+                localStorage.setItem(eventId, isLike ? 'like' : 'dislike');
+            } else {
+                localStorage.removeItem(eventId);
+            }
+        }
+    </script>
 {% endblock %}

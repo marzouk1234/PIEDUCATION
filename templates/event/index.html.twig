@@ -1,17 +1,24 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste Des Événements{% endblock %}
+{% block title %}Liste Des Événements - EDUPLAY{% endblock %}
 
 {% block body %}
-<div class="container pt-5 mt-5"> {# Correction : remplacer commentaire HTML par Twig #}
+<div class="container pt-5 mt-5">
 
     <!-- En-tête -->
     <div class="card bg-primary text-white mb-4">
-        <div class="card-body py-3">
+        <div class="card-body py-3 d-flex justify-content-between align-items-center">
             <h1 class="h4 mb-0">
                 <i class="bi bi-calendar-event me-2"></i>
                 Liste Des Événements
             </h1>
+            <div class="col-md-5">
+                <input type="text" 
+                       id="searchInput" 
+                       class="form-control" 
+                       placeholder="🔍 Rechercher par nom..."
+                       aria-label="Recherche">
+            </div>
         </div>
     </div>
 
@@ -28,10 +35,10 @@
                             <th class="text-end">Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="eventsBody">
                     {% for event in events %}
-                        <tr>
-                            <td>{{ event.Nom }}</td>
+                        <tr class="event-row">
+                            <td class="event-name">{{ event.Nom }}</td>
                             <td>{{ event.Date|date('d/m/Y H:i') }}</td>
                             <td>{{ event.Description }}</td>
                             <td class="text-end">
@@ -45,7 +52,7 @@
                         </tr>
                     {% else %}
                         <tr>
-                            <td colspan="4" class="text-center py-4 text-muted"> {# Correction : 5 → 4 #}
+                            <td colspan="4" class="text-center py-4 text-muted">
                                 Aucun événement trouvé
                             </td>
                         </tr>
@@ -58,8 +65,37 @@
 
     <!-- Footer -->
     <footer class="mt-4 text-center small text-muted">
-        <hr>
-        © Copyright {{ "now"|date("Y") }} EduPlay Co. Tous droits réservés.
+       
     </footer>
+    
 </div>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const searchInput = document.getElementById('searchInput');
+    const rows = document.querySelectorAll('.event-row');
+
+    function filterEvents() {
+        const searchTerm = searchInput.value.toLowerCase().trim();
+        
+        rows.forEach(row => {
+            const nameCell = row.querySelector('.event-name');
+            if (!nameCell) return;
+            
+            const name = nameCell.textContent.toLowerCase();
+            const isVisible = name.includes(searchTerm);
+            
+            row.style.display = isVisible ? '' : 'none';
+        });
+    }
+
+    
+    searchInput.addEventListener('input', filterEvents);
+    
+    filterEvents();
+});
+</script>
 {% endblock %}
