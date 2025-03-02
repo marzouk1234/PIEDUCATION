@@ -1,10 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Aide index{% endblock %}
+{% block title %}Liste des Aides{% endblock %}
 
 {% block stylesheets %}
 <style>
-    /* Espacement général */
     body {
         background-color: #f8f9fa;
     }
@@ -23,7 +22,7 @@
     }
 
     /* Formulaire de recherche */
-    form {
+    .search-form {
         background: white;
         padding: 20px;
         border-radius: 8px;
@@ -38,10 +37,10 @@
     .btn-search {
         background: #17a2b8;
         color: white;
-        transition: background 0.3s, transform 0.2s;
         width: 100%;
         font-size: 16px;
         padding: 10px;
+        transition: background 0.3s, transform 0.2s;
     }
 
     .btn-search:hover {
@@ -50,6 +49,10 @@
     }
 
     /* Tableau */
+    .table-container {
+        overflow-x: auto;
+    }
+
     .table {
         background: white;
         border-radius: 8px;
@@ -60,6 +63,7 @@
     .table th, .table td {
         padding: 15px;
         text-align: center;
+        white-space: nowrap;
     }
 
     .table thead {
@@ -74,7 +78,7 @@
     /* Boutons */
     .btn-animated {
         display: inline-block;
-        padding: 10px 20px;
+        padding: 10px 15px;
         border-radius: 5px;
         font-weight: bold;
         text-decoration: none;
@@ -119,16 +123,15 @@
         background: #1e7e34;
         transform: scale(1.1);
     }
-
 </style>
 {% endblock %}
 
 {% block body %}
 <div class="container">
-    <h1>Aide index</h1>
+    <h1>Liste des Aides</h1>
 
     <!-- Formulaire de recherche -->
-    <form method="GET" action="{{ path('app_aide_index') }}" class="mb-3">
+    <form method="GET" action="{{ path('app_aide_index') }}" class="search-form">
         <div class="row">
             <div class="col-md-5">
                 <input type="text" name="q" value="{{ query }}" placeholder="Rechercher..." class="form-control">
@@ -140,45 +143,61 @@
                 </select>
             </div>
             <div class="col-md-3">
-                <button type="submit" class="btn btn-search">Rechercher</button>
+                <button type="submit" class="btn btn-search"><i class="fas fa-search"></i> Rechercher</button>
             </div>
         </div>
     </form>
 
     <!-- Tableau des aides -->
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Sujet du Formulaire</th> 
-                <th>Sujet</th>
-                <th>Description</th>
-                <th>Date de Création</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for aide in aides %}
-            <tr>
-                <td>{{ aide.id }}</td>
-                <td>{{ aide.form is not null and aide.form.sujet is not null ? aide.form.sujet : 'Aucun sujet' }}</td>
-                <td>{{ aide.sujet }}</td>
-                <td>{{ aide.description }}</td>
-                <td>{{ aide.dateCreation ? aide.dateCreation|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('app_aide_show', {'id': aide.id}) }}" class="btn-animated btn-show">Voir</a>
-                    <a href="{{ path('app_aide_edit', {'id': aide.id}) }}" class="btn-animated btn-edit">Modifier</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">Aucun enregistrement trouvé</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Sujet du Formulaire</th> 
+                    <th>Sujet</th>
+                    <th>Description</th>
+                    <th>Date de Création</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for aide in aides %}
+                <tr>
+                    <td>{{ aide.id }}</td>
+                    <td>{{ aide.form is not null and aide.form.sujet is not null ? aide.form.sujet : 'Aucun sujet' }}</td>
+                    <td>{{ aide.sujet }}</td>
+                    <td>{{ aide.description }}</td>
+                    <td>{{ aide.dateCreation ? aide.dateCreation|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>
+                        <a href="{{ path('app_aide_show', {'id': aide.id}) }}" class="btn-animated btn-show">
+                            <i class="fas fa-eye"></i> Voir
+                        </a>
+                        <a href="{{ path('app_aide_edit', {'id': aide.id}) }}" class="btn-animated btn-edit">
+                            <i class="fas fa-edit"></i> Modifier
+                        </a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">Aucun enregistrement trouvé</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    {% if aides is defined and aides|length > 0 %}
+        <div class="d-flex justify-content-center">
+            {{ knp_pagination_render(aides) }}
+        </div>
+    {% endif %}
 
     <!-- Bouton pour créer une nouvelle aide -->
-    <a href="{{ path('app_aide_new') }}" class="btn-create">Créer Nouveau</a>
+    <a href="{{ path('app_aide_new') }}" class="btn-create">
+        <i class="fas fa-plus"></i> Créer Nouveau
+    </a>
 </div>
+
 {% endblock %}

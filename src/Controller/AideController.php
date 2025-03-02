@@ -5,33 +5,48 @@ namespace App\Controller;
 use App\Entity\Aide;
 use App\Form\AideType;
 use App\Repository\AideRepository;
+use App\Service\InappropriateWordFilter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\PaginatorInterface;
 
 #[Route('/aide')]
 final class AideController extends AbstractController
 {
+    private $wordFilter;
+
+    public function __construct(InappropriateWordFilter $wordFilter)
+    {
+        $this->wordFilter = $wordFilter;
+    }
+
     #[Route('/', name: 'app_aide_index', methods: ['GET'])]
-    public function index(Request $request, AideRepository $aideRepository): Response
-{
-    $query = $request->query->get('q', '');
-    $sort = $request->query->get('sort', 'date_creation');
-    $order = $request->query->get('order', 'DESC');
+    public function index(Request $request, AideRepository $aideRepository, PaginatorInterface $paginator): Response
+    {
+        $query = $request->query->get('q', '');
+        $sort = $request->query->get('sort', 'date_creation');
+        $order = $request->query->get('order', 'DESC');
 
-    $aides = $aideRepository->searchAides($query, $sort, $order);
+        // Requête pour récupérer les aides avec critères
+        $aidesQuery = $aideRepository->searchAides($query, $sort, $order);
 
-    return $this->render('aide/index.html.twig', [
-        'aides' => $aides,
-        'query' => $query,
-        'sort' => $sort,
-        'order' => $order
-    ]);
-}
+        // Pagination
+        $aides = $paginator->paginate(
+            $aidesQuery,
+            $request->query->getInt('page', 1),
+            10 // Nombre d'éléments par page
+        );
 
-
+        return $this->render('aide/index.html.twig', [
+            'aides' => $aides,
+            'query' => $query,
+            'sort' => $sort,
+            'order' => $order,
+        ]);
+    }
 
     #[Route('/new', name: 'app_aide_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
@@ -41,13 +56,21 @@ final class AideController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $aide->setDateCreation(new \DateTime()); // Ajoute la date actuelle
+            $contenu = $aide->getDescription();
+
+            if ($this->wordFilter->containsInappropriateWords($contenu)) {
+                $this->addFlash('warning', 'Votre texte contient des mots inappropriés.');
+            }
+
+            $descriptionFiltree = $this->wordFilter->filterInappropriateWords($contenu);
+            $aide->setDescription($descriptionFiltree);
+            $aide->setDateCreation(new \DateTime());
+
             $entityManager->persist($aide);
             $entityManager->flush();
 
             $this->addFlash('success', 'Aide ajoutée avec succès !');
-
-            return $this->redirectToRoute('app_aide_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_aide_index');
         }
 
         return $this->render('aide/new.html.twig', [
@@ -71,11 +94,19 @@ final class AideController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $contenu = $aide->getDescription();
+
+            if ($this->wordFilter->containsInappropriateWords($contenu)) {
+                $this->addFlash('warning', 'Votre texte contient des mots inappropriés.');
+            }
+
+            $contenuFiltre = $this->wordFilter->filterInappropriateWords($contenu);
+            $aide->setDescription($contenuFiltre);
+
             $entityManager->flush();
 
             $this->addFlash('success', 'Aide mise à jour avec succès !');
-
-            return $this->redirectToRoute('app_aide_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_aide_index');
         }
 
         return $this->render('aide/edit.html.twig', [
@@ -90,13 +121,9 @@ final class AideController extends AbstractController
         if ($this->isCsrfTokenValid('delete' . $aide->getId(), $request->get('_token'))) {
             $entityManager->remove($aide);
             $entityManager->flush();
-
             $this->addFlash('success', 'Aide supprimée avec succès !');
         }
 
-        return $this->redirectToRoute('app_aide_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_aide_index');
     }
-
-    
-
 }

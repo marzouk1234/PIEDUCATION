@@ -25,6 +25,12 @@
             transform: translateY(1px);
             box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
         }
+
+        /* Ajout d'une animation au focus des champs */
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0px 0px 8px rgba(0, 123, 255, 0.3);
+        }
     </style>
 {% endblock %}
 
@@ -71,23 +77,31 @@
 
           <!-- Champs du formulaire -->
           {% set fields = {
-            'sujet': { 'icon': 'fa-heading', 'placeholder': 'Entrez le sujet...' },
-            'description': { 'icon': '', 'placeholder': 'Écrivez la description ici...', 'type': 'textarea' },
-            'date_creation': { 'icon': 'fa-calendar-alt' },
+            'sujet': { 'icon': 'fa-heading', 'placeholder': 'Entrez le sujet...', 'type': 'text' },
+            'description': { 'icon': 'fa-align-left', 'placeholder': 'Décrivez le problème...', 'type': 'textarea' },
+            'date_creation': { 'icon': 'fa-calendar-alt', 'type': 'date' },
             'form': { 'icon': 'fa-file-alt', 'type': 'select' }
           } %}
 
           {% for field, options in fields %}
             <div class="mb-3">
-              <label class="form-label fw-bold">{{ form[field].vars.label|default(field|capitalize) }}</label>
+              <label for="{{ form[field].vars.id }}" class="form-label fw-bold">
+                <i class="fas {{ options.icon }}"></i> {{ form[field].vars.label|default(field|capitalize) }}
+              </label>
               <div class="input-group">
                 {% if options.icon %}
                   <span class="input-group-text bg-light"><i class="fas {{ options.icon }}"></i></span>
                 {% endif %}
-                {{ form_widget(form[field], {'attr': {'class': 'form-control', 'placeholder': options.placeholder|default('')}}) }}
+                {{ form_widget(form[field], {
+                  'attr': {
+                    'class': 'form-control',
+                    'placeholder': options.placeholder|default(''),
+                    'aria-describedby': 'error-' ~ field
+                  }
+                }) }}
               </div>
               {% for error in form[field].vars.errors %}
-                <div class="text-danger mt-1">{{ error.message }}</div>
+                <div class="text-danger mt-1" id="error-{{ field }}">{{ error.message }}</div>
               {% endfor %}
             </div>
           {% endfor %}
@@ -126,6 +140,15 @@
                 button.classList.remove("shadow-lg");
             });
         });
+
+        // Focus sur le premier champ avec erreur
+        const firstErrorField = document.querySelector(".text-danger");
+        if (firstErrorField) {
+            const inputField = firstErrorField.closest(".mb-3").querySelector(".form-control");
+            if (inputField) {
+                inputField.focus();
+            }
+        }
     });
   </script>
 {% endblock %}

@@ -4,14 +4,13 @@
 
 {% block stylesheets %}
 <style>
-    /* Styles existants */
     body {
         background-color: #f8f9fa;
         font-family: 'Poppins', sans-serif;
     }
 
     .container {
-        max-width: 900px;
+        max-width: 900px; /* Augmentation de la largeur */
         margin: 50px auto;
         padding: 40px;
         background: white;
@@ -26,34 +25,40 @@
         margin-bottom: 35px;
     }
 
-    .table {
-        width: 100%;
-        border-collapse: separate;
-        border-spacing: 0 10px;
+    .details-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .detail-item {
+        display: flex;
+        align-items: center;
         background: white;
+        border: 2px solid #007bff;
+        border-radius: 8px;
+        padding: 15px;
+        font-size: 18px;
+        font-weight: bold;
     }
 
-    .table th, .table td {
-        padding: 18px;
-        border-bottom: 1px solid #ddd;
-    }
-
-    .table th {
+    .detail-label {
+        width: 30%;
         background: #007bff;
         color: white;
-        text-align: left;
-        border-radius: 8px 8px 0 0;
+        padding: 12px;
+        border-radius: 6px 0 0 6px;
+        font-weight: bold;
+        text-align: center;
     }
 
-    .table tr {
-        background: #fff;
-        border-radius: 8px;
-        box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.05);
-    }
-
-    .table td {
-        font-size: 16px;
-        color: #555;
+    .detail-value {
+        width: 70%;
+        padding: 12px;
+        background: white;
+        color: #333;
+        font-weight: normal;
+        border-radius: 0 6px 6px 0;
     }
 
     .btn-container {
@@ -99,45 +104,42 @@
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
 
-    .table tr:hover {
-        background-color: #f1f1f1;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .table tr {
-        transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    }
 </style>
 {% endblock %}
 
 {% block body %}
 <div class="container">
+    <br></br>
+    <br></br>
+    <br></br>
+    <br></br>
+   
+   
+   
     <h1>Détails de l'Aide</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ aide.id }}</td>
-            </tr>
-            <tr>
-                <th>Sujet</th>
-                <td>{{ aide.sujet }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ aide.description }}</td>
-            </tr>
-            <tr>
-                <th>Date de création</th>
-                <td>{{ aide.dateCreation ? aide.dateCreation|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Sujet du Formulaire</th>
-                <td>{{ aide.form.sujet }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="details-container">
+        <div class="detail-item">
+            <span class="detail-label">Id</span>
+            <span class="detail-value">{{ aide.id }}</span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Sujet</span>
+            <span class="detail-value">{{ aide.sujet }}</span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Description</span>
+            <span class="detail-value">{{ aide.description }}</span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Date de création</span>
+            <span class="detail-value">{{ aide.dateCreation ? aide.dateCreation|date('Y-m-d H:i:s') : '' }}</span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Sujet du Formulaire</span>
+            <span class="detail-value">{{ aide.form.sujet }}</span>
+        </div>
+    </div>
 
     <div class="btn-container">
         <a href="{{ path('app_aide_index') }}" class="btn-custom btn-primary">⬅ Retour à la liste</a>
