@@ -20,5 +20,15 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
+    # Explicit definition of the MailerService
+    App\Service\MailerService:
+        arguments:
+            $mailer: '@mailer'
+
+    # Explicit definition of the HistoriqueService
+    App\Service\HistoriqueService:
+        arguments:
+            $entityManager: '@doctrine.orm.entity_manager'
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

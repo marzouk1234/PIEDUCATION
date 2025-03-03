@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistiques des Résultats</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Statistiques des Résultats par Note</h1>
+
+    <!-- Bouton pour afficher les statistiques -->
+    <button id="loadStatsBtn" class="btn btn-primary">Afficher les Statistiques</button>
+
+    <!-- Conteneur pour le graphique -->
+    <div id="statsContainer" style="display: none;">
+        <canvas id="statsChart" width="400" height="200"></canvas>
+    </div>
+
+    <script>
+        // Sélectionner les éléments HTML
+        const loadStatsBtn = document.getElementById('loadStatsBtn');
+        const statsContainer = document.getElementById('statsContainer');
+        
+        // Ajouter un écouteur d'événements sur le bouton
+        loadStatsBtn.addEventListener('click', function() {
+            // Masquer le bouton après qu'il ait été cliqué
+            loadStatsBtn.style.display = 'none';
+            
+            // Afficher le conteneur pour le graphique
+            statsContainer.style.display = 'block';
+
+            // Récupérer les données des statistiques
+            fetch('/stats')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.length > 0) {
+                        // Préparer les données pour le graphique
+                        const labels = data.map(item => 'Note ' + item.note);
+                        const counts = data.map(item => item.count);
+
+                        // Créer le graphique avec Chart.js
+                        new Chart(document.getElementById('statsChart'), {
+                            type: 'bar',
+                            data: {
+                                labels: labels,
+                                datasets: [{
+                                    label: 'Nombre de résultats',
+                                    data: counts,
+                                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                                    borderColor: 'rgba(54, 162, 235, 1)',
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                scales: {
+                                    y: {
+                                        beginAtZero: true
+                                    }
+                                }
+                            }
+                        });
+                    } else {
+                        // Si aucune donnée, afficher un message
+                        alert('Aucune donnée disponible pour les statistiques');
+                    }
+                })
+                .catch(error => {
+                    console.error('Erreur lors de la récupération des données des statistiques:', error);
+                });
+        });
+    </script>
+</body>
+</html>

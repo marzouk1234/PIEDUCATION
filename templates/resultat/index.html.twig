@@ -5,6 +5,13 @@
 {% block body %}
     <div class="container mt-4">
         <h1 class="mb-4 text-center" style="color: #FF8C42; font-weight: 600;">Liste des Résultats</h1> <!-- Titre en orange clair -->
+        
+        <!-- Bouton pour trier les notes par ordre croissant -->
+        <div class="text-center mb-3">
+            <a href="{{ path('app_resultat_trier') }}" class="btn btn-primary">
+                <i class="bi bi-sort-numeric-down"></i> Organiser
+            </a>
+        </div>
 
         <table class="table table-striped table-hover table-bordered shadow-sm rounded">
             <thead class="text-center" style="background-color: #4A90E2; color: #FFFFFF;"> <!-- En-tête en bleu clair -->
@@ -37,5 +44,36 @@
             {% endfor %}
             </tbody>
         </table>
+<<<<<<< HEAD
     </div>
 {% endblock %}
+=======
+
+        <div class="text-center mt-4">
+            <a href="{{ path('app_resultat_new') }}" class="btn btn-success btn-lg">
+                <i class="bi bi-plus-circle"></i> Créer un nouveau résultat
+            </a>
+        </div>
+
+       <div class="pagination mt-4 text-center">
+    {% if pager.hasPreviousPage %}
+        <a href="{{ path('app_resultat_index', {'page': pager.previousPage}) }}" class="btn btn-secondary">
+            Précédent
+        </a>
+    {% endif %}
+
+    {% for page in 1..pager.getNbPages() %}
+        <a href="{{ path('app_resultat_index', {'page': page}) }}" class="btn btn-outline-primary {% if page == pager.getCurrentPage() %}active{% endif %}">
+            {{ page }}
+        </a>
+    {% endfor %}
+
+    {% if pager.hasNextPage %}
+        <a href="{{ path('app_resultat_index', {'page': pager.nextPage}) }}" class="btn btn-secondary">
+            Suivant
+        </a>
+    {% endif %}
+</div>
+
+{% endblock %}
+>>>>>>> 25aed6f (metiers+ API)

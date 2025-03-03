@@ -53,8 +53,8 @@ class ResultatType extends AbstractType
             ])
             ->add('Evaluation', EntityType::class, [
                 'class' => Evaluation::class,
-                'choice_label' => 'titre', // Vérifie que Evaluation a bien un champ `nom`
-                'label' => 'evaluation',
+                'choice_label' => 'titre', // Assurez-vous que l'entité Evaluation a bien un champ `titre`
+                'label' => 'Évaluation',
                 'attr' => ['class' => 'form-control'],
                 'constraints' => [
                     new Assert\NotNull(['message' => "Une évaluation doit être sélectionnée."])

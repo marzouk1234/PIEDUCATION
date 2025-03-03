@@ -2,32 +2,22 @@
 
 namespace App\Repository;
 
-use App\Entity\Evaluation;
+use App\Entity\Etudiant;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Evaluation>
+ * @extends ServiceEntityRepository<Etudiant>
  */
-class EvaluationRepository extends ServiceEntityRepository
+class EtudiantRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Evaluation::class);
+        parent::__construct($registry, Etudiant::class);
     }
-    public function findByTitle(string $title): array
-    {
-        return $this->createQueryBuilder('e')
-            ->where('LOWER(e.titre) LIKE LOWER(:title)') // Insensible à la casse
-            ->setParameter('title', '%' . $title . '%')
-            ->orderBy('e.titre', 'ASC') // Trie les résultats
-            ->getQuery()
-            ->getResult();
-    }
-    
 
     //    /**
-    //     * @return Evaluation[] Returns an array of Evaluation objects
+    //     * @return Etudiant[] Returns an array of Etudiant objects
     //     */
     //    public function findByExampleField($value): array
     //    {
@@ -41,7 +31,7 @@ class EvaluationRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?Evaluation
+    //    public function findOneBySomeField($value): ?Etudiant
     //    {
     //        return $this->createQueryBuilder('e')
     //            ->andWhere('e.exampleField = :val')

@@ -13,5 +13,9 @@ return [
     Symfony\Bundle\SecurityBundle\SecurityBundle::class => ['all' => true],
     Symfony\Bundle\MonologBundle\MonologBundle::class => ['all' => true],
     Symfony\Bundle\MakerBundle\MakerBundle::class => ['dev' => true],
+<<<<<<< HEAD
     SymfonyCasts\Bundle\VerifyEmail\SymfonyCastsVerifyEmailBundle::class => ['all' => true],
+=======
+    Knp\Bundle\PaginatorBundle\KnpPaginatorBundle::class => ['all' => true],
+>>>>>>> 25aed6f (metiers+ API)
 ];

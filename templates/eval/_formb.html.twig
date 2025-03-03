@@ -1,24 +1,21 @@
-{# templates/eval/formb.html.twig #}
-
-{{ form_start(form, {'attr': {'id': 'evaluationForm', 'class': 'form-horizontal'}}) }}
+{{ form_start(form, {'attr': {'id': 'evaluationForm', 'class': 'form-horizontal', 'novalidate': 'novalidate'}}) }}
 
     <div class="mb-3">
         {{ form_label(form.titre, 'Titre', {'label_attr': {'class': 'form-label'}}) }}
         {{ form_widget(form.titre, {'attr': {'class': 'form-control', 'placeholder': 'Entrez le titre'}}) }}
-        <small class="form-text text-muted">Le titre doit contenir au moins 3 caractères.</small>
-        {{ form_errors(form.titre) }}
+        <div class="text-danger">{{ form_errors(form.titre) }}</div>
     </div>
 
     <div class="mb-3">
         {{ form_label(form.date, 'Date', {'label_attr': {'class': 'form-label'}}) }}
         {{ form_widget(form.date, {'attr': {'class': 'form-control'}}) }}
-        {{ form_errors(form.date) }}
+        <div class="text-danger">{{ form_errors(form.date) }}</div>
     </div>
 
     <div class="mb-3">
         {{ form_label(form.type, 'Type', {'label_attr': {'class': 'form-label'}}) }}
         {{ form_widget(form.type, {'attr': {'class': 'form-control'}}) }}
-        {{ form_errors(form.type) }}
+        <div class="text-danger">{{ form_errors(form.type) }}</div>
     </div>
 
     <div class="text-center">
@@ -29,26 +26,24 @@
 
 {{ form_end(form) }}
 
-{# Ajoutez jQuery et jQuery Validation #}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
 
 <script>
 $(document).ready(function() {
-    // Configuration de la validation
     $("#evaluationForm").validate({
         rules: {
-            'evaluation[titre]': { // Nom du champ généré par Symfony
+            'evaluation[titre]': {
                 required: true,
                 minlength: 3,
-                regex: /^[a-zA-ZÀ-ÿ\s]+$/ // Validation regex pour les lettres et espaces
+                regex: /^[a-zA-ZÀ-ÿ\s]+$/
             },
             'evaluation[date]': {
                 required: true,
-                date: true // Validation de la date
+                date: true
             },
             'evaluation[type]': {
-                required: true // Champ obligatoire
+                required: true
             }
         },
         messages: {
@@ -68,7 +63,7 @@ $(document).ready(function() {
         errorClass: "is-invalid",
         validClass: "is-valid",
         errorPlacement: function(error, element) {
-            error.addClass('invalid-feedback');
+            error.addClass('text-danger'); // Erreurs en rouge
             element.closest('.mb-3').append(error);
         },
         highlight: function(element, errorClass, validClass) {
@@ -79,7 +74,6 @@ $(document).ready(function() {
         }
     });
 
-    // Ajoutez une méthode personnalisée pour la validation regex
     $.validator.addMethod("regex", function(value, element, regexp) {
         var re = new RegExp(regexp);
         return this.optional(element) || re.test(value);

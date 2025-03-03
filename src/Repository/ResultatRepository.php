@@ -15,6 +15,36 @@ class ResultatRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Resultat::class);
     }
+    public function findWithEvaluation($id): ?Resultat
+    {
+    return $this->createQueryBuilder('r')
+        ->leftJoin('r.evaluation', 'e')
+        ->addSelect('e')
+        ->where('r.id = :id')
+        ->setParameter('id', $id)
+        ->getQuery()
+        ->getOneOrNullResult();
+}
+
+ 
+    public function countResultsByNote(): array
+    {
+        return $this->createQueryBuilder('r')
+            ->select("
+                CASE 
+                    WHEN r.note < 10 THEN '< 10'
+                    WHEN r.note BETWEEN 10 AND 15 THEN '10 - 15'
+                    ELSE '> 15'
+                END as category, COUNT(r.id) as count
+            ")
+            ->groupBy('category')
+            ->getQuery()
+            ->getResult();
+    }
+    
+
+}
+
 
     //    /**
     //     * @return Resultat[] Returns an array of Resultat objects
@@ -40,4 +70,4 @@ class ResultatRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
-}
+

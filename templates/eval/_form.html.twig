@@ -1,23 +1,21 @@
-{{ form_start(form, {'attr': {'id': 'evaluationForm', 'class': 'form-horizontal'}}) }}
+{{ form_start(form, {'attr': {'id': 'evaluationForm', 'class': 'form-horizontal', 'novalidate': 'novalidate'}}) }}
+<div class="mb-3">
+    {{ form_label(form.titre, 'Titre', {'label_attr': {'class': 'form-label fw-bold text-primary'}}) }}
+    {{ form_widget(form.titre, {'attr': {'class': 'form-control border-primary'}}) }}
+    <div class="text-danger">{{ form_errors(form.titre) }}</div>
+</div>
 
-    <div class="mb-3">
-        {{ form_label(form.titre, 'Titre', {'label_attr': {'class': 'form-label fw-bold text-primary'}}) }}
-        {{ form_widget(form.titre, {'attr': {'class': 'form-control border-primary', 'placeholder': 'Entrez le titre'}}) }}
-        <small class="form-text text-muted">Le titre doit contenir au moins 3 caractères et commencer par une lettre.</small>
-        <div class="invalid-feedback">Le titre doit commencer par une lettre et ne peut pas être composé uniquement de chiffres.</div>
-    </div>
+<div class="mb-3">
+    {{ form_label(form.date, 'Date', {'label_attr': {'class': 'form-label fw-bold text-primary'}}) }}
+    {{ form_widget(form.date, {'attr': {'class': 'form-control border-primary'}}) }}
+    <div class="text-danger">{{ form_errors(form.date) }}</div>
+</div>
 
-    <div class="mb-3">
-        {{ form_label(form.date, 'Date', {'label_attr': {'class': 'form-label fw-bold text-primary'}}) }}
-        {{ form_widget(form.date, {'attr': {'class': 'form-control border-primary'}}) }}
-        <div class="invalid-feedback">La date est obligatoire.</div>
-    </div>
-
-    <div class="mb-3">
-        {{ form_label(form.type, 'Type', {'label_attr': {'class': 'form-label fw-bold text-primary'}}) }}
-        {{ form_widget(form.type, {'attr': {'class': 'form-control border-primary'}}) }}
-        <div class="invalid-feedback">Le type est obligatoire.</div>
-    </div>
+<div class="mb-3">
+    {{ form_label(form.type, 'Type', {'label_attr': {'class': 'form-label fw-bold text-primary'}}) }}
+    {{ form_widget(form.type, {'attr': {'class': 'form-control border-primary'}}) }}
+    <div class="text-danger">{{ form_errors(form.type) }}</div>
+</div>
 
     <div class="text-center">
         <button type="submit" class="btn btn-primary" style="background-color: #4A90E2; border-color: #4A90E2;">

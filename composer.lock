@@ -4,7 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
+<<<<<<< HEAD
     "content-hash": "2ebb2cbba4770db77b40a4192d4ac04e",
+=======
+    "content-hash": "08028bc3e2dc2d8cc9b669b23d1eabc9",
+>>>>>>> 25aed6f (metiers+ API)
     "packages": [
         {
             "name": "composer/semver",
@@ -1445,6 +1449,167 @@
             "time": "2024-12-27T00:36:43+00:00"
         },
         {
+            "name": "knplabs/knp-components",
+            "version": "v5.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/KnpLabs/knp-components.git",
+                "reference": "a1ccc001fd243670ca1e970356027a53d6fca2af"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/KnpLabs/knp-components/zipball/a1ccc001fd243670ca1e970356027a53d6fca2af",
+                "reference": "a1ccc001fd243670ca1e970356027a53d6fca2af",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.1",
+                "symfony/event-dispatcher-contracts": "^3.0"
+            },
+            "conflict": {
+                "doctrine/dbal": "<3.8"
+            },
+            "require-dev": {
+                "doctrine/dbal": "^3.8 || ^4.0",
+                "doctrine/mongodb-odm": "^2.5.5",
+                "doctrine/orm": "^2.13 || ^3.0",
+                "doctrine/phpcr-odm": "^1.8 || ^2.0",
+                "ext-pdo_sqlite": "*",
+                "jackalope/jackalope-doctrine-dbal": "^1.12 || ^2.0",
+                "phpunit/phpunit": "^10.5 || ^11.3",
+                "propel/propel1": "^1.7",
+                "ruflin/elastica": "^7.0",
+                "solarium/solarium": "^6.0",
+                "symfony/http-foundation": "^5.4.38 || ^6.4.4 || ^7.0",
+                "symfony/http-kernel": "^5.4.38 || ^6.4.4 || ^7.0",
+                "symfony/property-access": "^5.4.38 || ^6.4.4 || ^7.0"
+            },
+            "suggest": {
+                "doctrine/common": "to allow usage pagination with Doctrine ArrayCollection",
+                "doctrine/mongodb-odm": "to allow usage pagination with Doctrine ODM MongoDB",
+                "doctrine/orm": "to allow usage pagination with Doctrine ORM",
+                "doctrine/phpcr-odm": "to allow usage pagination with Doctrine ODM PHPCR",
+                "propel/propel1": "to allow usage pagination with Propel ORM",
+                "ruflin/elastica": "to allow usage pagination with ElasticSearch Client",
+                "solarium/solarium": "to allow usage pagination with Solarium Client",
+                "symfony/http-foundation": "to retrieve arguments from Request",
+                "symfony/property-access": "to allow sorting arrays"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "5.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Knp\\Component\\": "src/Knp/Component"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "KnpLabs Team",
+                    "homepage": "https://knplabs.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://github.com/KnpLabs/knp-components/contributors"
+                }
+            ],
+            "description": "Knplabs component library",
+            "homepage": "https://github.com/KnpLabs/knp-components",
+            "keywords": [
+                "components",
+                "knp",
+                "knplabs",
+                "pager",
+                "paginator"
+            ],
+            "support": {
+                "issues": "https://github.com/KnpLabs/knp-components/issues",
+                "source": "https://github.com/KnpLabs/knp-components/tree/v5.1.0"
+            },
+            "time": "2024-09-20T12:03:01+00:00"
+        },
+        {
+            "name": "knplabs/knp-paginator-bundle",
+            "version": "v6.6.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/KnpLabs/KnpPaginatorBundle.git",
+                "reference": "1a00f88149d25418bd99d8954eba951f04cc3acf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/KnpLabs/KnpPaginatorBundle/zipball/1a00f88149d25418bd99d8954eba951f04cc3acf",
+                "reference": "1a00f88149d25418bd99d8954eba951f04cc3acf",
+                "shasum": ""
+            },
+            "require": {
+                "knplabs/knp-components": "^4.4 || ^5.0",
+                "php": "^8.1",
+                "symfony/config": "^6.4 || ^7.0",
+                "symfony/dependency-injection": "^6.4 || ^7.0",
+                "symfony/event-dispatcher": "^6.4 || ^7.0",
+                "symfony/http-foundation": "^6.4 || ^7.0",
+                "symfony/http-kernel": "^6.4 || ^7.0",
+                "symfony/routing": "^6.4 || ^7.0",
+                "symfony/translation": "^6.4 || ^7.0",
+                "twig/twig": "^3.0"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^1.11",
+                "phpunit/phpunit": "^10.5 || ^11.3",
+                "symfony/expression-language": "^6.4 || ^7.0",
+                "symfony/templating": "^6.4 || ^7.0"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "6.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Knp\\Bundle\\PaginatorBundle\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "KnpLabs Team",
+                    "homepage": "https://knplabs.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://github.com/KnpLabs/KnpPaginatorBundle/contributors"
+                }
+            ],
+            "description": "Paginator bundle for Symfony to automate pagination and simplify sorting and other features",
+            "homepage": "https://github.com/KnpLabs/KnpPaginatorBundle",
+            "keywords": [
+                "bundle",
+                "knp",
+                "knplabs",
+                "pager",
+                "pagination",
+                "paginator",
+                "symfony"
+            ],
+            "support": {
+                "issues": "https://github.com/KnpLabs/KnpPaginatorBundle/issues",
+                "source": "https://github.com/KnpLabs/KnpPaginatorBundle/tree/v6.6.1"
+            },
+            "time": "2024-10-07T16:11:50+00:00"
+        },
+        {
             "name": "monolog/monolog",
             "version": "3.8.1",
             "source": {
@@ -1546,6 +1711,107 @@
                 }
             ],
             "time": "2024-12-05T17:15:07+00:00"
+        },
+        {
+            "name": "pagerfanta/pagerfanta",
+            "version": "v4.7.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/BabDev/Pagerfanta.git",
+                "reference": "b09216fc53665c4d8a39b7f60e421165cb4693e4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/BabDev/Pagerfanta/zipball/b09216fc53665c4d8a39b7f60e421165cb4693e4",
+                "reference": "b09216fc53665c4d8a39b7f60e421165cb4693e4",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": "^8.1",
+                "symfony/deprecation-contracts": "^2.1 || ^3.0"
+            },
+            "conflict": {
+                "doctrine/collections": "<1.8",
+                "doctrine/dbal": "<3.5",
+                "doctrine/mongodb-odm": "<2.4",
+                "doctrine/orm": "<2.14",
+                "doctrine/phpcr-odm": "<1.7",
+                "ruflin/elastica": "<7.3",
+                "solarium/solarium": "<6.2",
+                "twig/twig": "<2.13"
+            },
+            "replace": {
+                "pagerfanta/core": "self.version",
+                "pagerfanta/doctrine-collections-adapter": "self.version",
+                "pagerfanta/doctrine-dbal-adapter": "self.version",
+                "pagerfanta/doctrine-mongodb-odm-adapter": "self.version",
+                "pagerfanta/doctrine-orm-adapter": "self.version",
+                "pagerfanta/doctrine-phpcr-odm-adapter": "self.version",
+                "pagerfanta/elastica-adapter": "self.version",
+                "pagerfanta/solarium-adapter": "self.version",
+                "pagerfanta/twig": "self.version"
+            },
+            "require-dev": {
+                "dg/bypass-finals": "^1.5.1",
+                "doctrine/collections": "^1.8 || ^2.0",
+                "doctrine/dbal": "^3.5 || ^4.0",
+                "doctrine/mongodb-odm": "^2.4",
+                "doctrine/orm": "^2.14 || ^3.0",
+                "doctrine/phpcr-odm": "^1.7 || ^2.0",
+                "jackalope/jackalope-doctrine-dbal": "^1.9 || ^2.0",
+                "phpstan/extension-installer": "^1.4",
+                "phpstan/phpstan": "2.0.3",
+                "phpstan/phpstan-phpunit": "2.0.1",
+                "phpunit/phpunit": "10.5.39",
+                "rector/rector": "2.0.3",
+                "ruflin/elastica": "^7.3 || ^8.0",
+                "solarium/solarium": "^6.2",
+                "symfony/cache": "^5.4 || ^6.3 || ^7.0",
+                "twig/twig": "^2.13 || ^3.0"
+            },
+            "suggest": {
+                "twig/twig": "To integrate Pagerfanta with Twig"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Pagerfanta\\": "lib/Core/",
+                    "Pagerfanta\\Twig\\": "lib/Twig/",
+                    "Pagerfanta\\Elastica\\": "lib/Adapter/Elastica/",
+                    "Pagerfanta\\Solarium\\": "lib/Adapter/Solarium/",
+                    "Pagerfanta\\Doctrine\\ORM\\": "lib/Adapter/Doctrine/ORM/",
+                    "Pagerfanta\\Doctrine\\DBAL\\": "lib/Adapter/Doctrine/DBAL/",
+                    "Pagerfanta\\Doctrine\\PHPCRODM\\": "lib/Adapter/Doctrine/PHPCRODM/",
+                    "Pagerfanta\\Doctrine\\MongoDBODM\\": "lib/Adapter/Doctrine/MongoDBODM/",
+                    "Pagerfanta\\Doctrine\\Collections\\": "lib/Adapter/Doctrine/Collections/"
+                },
+                "exclude-from-classmap": [
+                    "lib/**/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Pagination for PHP",
+            "keywords": [
+                "page",
+                "pagination",
+                "paginator",
+                "paging"
+            ],
+            "support": {
+                "issues": "https://github.com/BabDev/Pagerfanta/issues",
+                "source": "https://github.com/BabDev/Pagerfanta/tree/v4.7.1"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/mbabker",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-12-13T15:12:11+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -3778,6 +4044,71 @@
                 }
             ],
             "time": "2025-01-28T18:47:02+00:00"
+        },
+        {
+            "name": "symfony/google-mailer",
+            "version": "v7.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/google-mailer.git",
+                "reference": "cefe8c960c117397cc5649106a842068efcc5cc0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/google-mailer/zipball/cefe8c960c117397cc5649106a842068efcc5cc0",
+                "reference": "cefe8c960c117397cc5649106a842068efcc5cc0",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.2",
+                "symfony/mailer": "^7.2"
+            },
+            "require-dev": {
+                "symfony/http-client": "^6.4|^7.0"
+            },
+            "type": "symfony-mailer-bridge",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Mailer\\Bridge\\Google\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Google Mailer Bridge",
+            "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/google-mailer/tree/v7.2.0"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2024-09-28T08:24:38+00:00"
         },
         {
             "name": "symfony/http-client",
@@ -7550,6 +7881,59 @@
                 }
             ],
             "time": "2025-01-29T07:06:14+00:00"
+        },
+        {
+            "name": "twilio/sdk",
+            "version": "8.3.15",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/twilio/twilio-php.git",
+                "reference": "3113e8a672edf5e012120fa6fafc201e013c7ba4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/twilio/twilio-php/zipball/3113e8a672edf5e012120fa6fafc201e013c7ba4",
+                "reference": "3113e8a672edf5e012120fa6fafc201e013c7ba4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "require-dev": {
+                "guzzlehttp/guzzle": "^6.3 || ^7.0",
+                "phpunit/phpunit": ">=7.0 < 10"
+            },
+            "suggest": {
+                "guzzlehttp/guzzle": "An HTTP client to execute the API requests"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Twilio\\": "src/Twilio/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Twilio API Team",
+                    "email": "api@twilio.com"
+                }
+            ],
+            "description": "A PHP wrapper for Twilio's API",
+            "homepage": "https://github.com/twilio/twilio-php",
+            "keywords": [
+                "api",
+                "sms",
+                "twilio"
+            ],
+            "support": {
+                "issues": "https://github.com/twilio/twilio-php/issues",
+                "source": "https://github.com/twilio/twilio-php/tree/8.3.15"
+            },
+            "time": "2025-02-20T14:18:17+00:00"
         },
         {
             "name": "webmozart/assert",

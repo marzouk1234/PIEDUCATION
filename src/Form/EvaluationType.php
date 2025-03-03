@@ -3,10 +3,12 @@
 namespace App\Form;
 
 use App\Entity\Evaluation;
+use App\Entity\Etudiant;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -25,6 +27,13 @@ class EvaluationType extends AbstractType
                 'label' => 'Date',
                 'required' => true,
             ])
+            ->add('etudiants', EntityType::class, [
+                'class' => Etudiant::class,
+                'choice_label' => 'nomEtPrenom',
+                'multiple' => true,
+                'expanded' => true,
+                'label' => 'Étudiants associés',
+            ])
             ->add('type', ChoiceType::class, [
                 'choices' => [
                     'Examen' => 'Examen',
@@ -34,7 +43,8 @@ class EvaluationType extends AbstractType
                 'label' => 'Type',
                 'placeholder' => 'Choisissez un type',
                 'required' => true,
-            ]);
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

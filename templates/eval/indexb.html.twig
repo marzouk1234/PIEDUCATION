@@ -15,13 +15,13 @@
         <table class="table table-striped table-hover table-bordered shadow-sm rounded" style="background-color: #F9F9F9; border-color: #E0E0E0;">
             <thead class="text-center" style="background-color: #5A9FD6; color: #FFFFFF;">
                 <tr>
-                    <th scope="col">Titre</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Type</th>
+                    <th scope="col" class="sortable" data-sort="titre">Titre</th>
+                    <th scope="col" class="sortable" data-sort="date">Date</th>
+                    <th scope="col" class="sortable" data-sort="type">Type</th>
                     <th scope="col" style="width: 200px;">Actions</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="evaluation-table-body">
             {% for evaluation in evaluations %}
                 <tr class="align-middle">
                     <td class="text-center">{{ evaluation.titre }}</td>
@@ -52,10 +52,77 @@
             </tbody>
         </table>
 
+        <div class="d-flex justify-content-center mt-4">
+            {{ knp_pagination_render(evaluations) }}
+        </div>
+
         <div class="text-center mt-4">
             <a href="{{ path('app_eval_newb') }}" class="btn btn-success btn-lg" style="background-color: #81C784; border-color: #81C784;">
                 <i class="bi bi-plus-circle"></i> Ajouter une nouvelle évaluation
             </a>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Variables pour la gestion du tri
+            let sortOrder = { 'titre': true, 'date': true, 'type': true }; // true = ascendant, false = descendant
+
+            // Fonction de tri
+            function sortTable(column, isAscending) {
+                const table = document.querySelector('table');
+                const rows = Array.from(table.querySelectorAll('tbody tr'));
+                const index = {
+                    'titre': 0,
+                    'date': 1,
+                    'type': 2
+                }[column];
+
+                rows.sort((rowA, rowB) => {
+                    const cellA = rowA.children[index].innerText.trim();
+                    const cellB = rowB.children[index].innerText.trim();
+
+                    let comparison = 0;
+                    if (column === 'date') {
+                        // Convertir les dates au format 'd/m/Y' en objets Date
+                        const dateA = parseDate(cellA);
+                        const dateB = parseDate(cellB);
+                        comparison = dateA - dateB;
+                    } else {
+                        // Comparaison de texte pour les autres colonnes
+                        comparison = cellA.localeCompare(cellB, 'fr', { sensitivity: 'base' });
+                    }
+
+                    return isAscending ? comparison : -comparison;
+                });
+
+                rows.forEach(row => table.querySelector('tbody').appendChild(row));
+            }
+
+            // Fonction pour convertir une chaîne de date 'd/m/Y' en objet Date
+            function parseDate(dateStr) {
+                if (dateStr === 'N/A') return new Date(0); // Gérer les dates non disponibles
+                const [day, month, year] = dateStr.split('/');
+                return new Date(year, month - 1, day);
+            }
+
+            // Ajouter les événements de tri sur les en-têtes de colonnes
+            document.querySelectorAll('.sortable').forEach(header => {
+                header.addEventListener('click', () => {
+                    const column = header.dataset.sort;
+                    const isAscending = sortOrder[column];
+
+                    // Trier la table
+                    sortTable(column, isAscending);
+
+                    // Inverser l'ordre de tri pour la prochaine fois
+                    sortOrder[column] = !isAscending;
+
+                    // Mettre à jour l'indication visuelle du tri
+                    document.querySelectorAll('.sortable').forEach(th => th.classList.remove('asc', 'desc'));
+                    header.classList.add(isAscending ? 'asc' : 'desc');
+                });
+            });
+        });
+    </script>
 {% endblock %}

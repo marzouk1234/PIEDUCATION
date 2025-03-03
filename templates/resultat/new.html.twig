@@ -6,6 +6,7 @@
     <h1 style="color: #FFA500; text-align: center; font-weight: bold;">Create new Resultat</h1>
 
     <div class="container mt-4" style="max-width: 600px; background: #f8f9fa; padding: 20px; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);">
+<<<<<<< HEAD
         {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
 
         <div class="mb-3">
@@ -36,8 +37,10 @@
 
 
         {{ form_end(form) }}
+=======
+        {% include 'resultat/_form.html.twig' %}
+>>>>>>> 25aed6f (metiers+ API)
     </div>
-
     <div class="text-center mt-3">
         <a href="{{ path('app_resultat_index') }}" class="btn btn-secondary">Back to list</a>
     </div>
@@ -59,13 +62,17 @@
                 }
             }
 
+            // Vérifier la note en temps réel et mettre à jour l'appréciation
             $('#resultat_note').on('input', function() {
                 var note = $(this).val();
                 if (note >= 0 && note <= 20) {
                     $('#resultat_appreciation').val(setAppreciation(note));
+                } else {
+                    $('#resultat_appreciation').val('');
                 }
             });
 
+            // Vérification avant soumission du formulaire
             $('form').on('submit', function(event) {
                 var note = $('#resultat_note').val();
                 var dateCreation = $('#resultat_dateCreation').val();
@@ -75,9 +82,13 @@
                 if (note === '' || dateCreation === '' || appreciation === '' || evaluation === '') {
                     alert('Tous les champs doivent être remplis.');
                     event.preventDefault();
-                } else if (note < 0 || note > 20) {
+                    return;
+                }
+
+                if (note < 0 || note > 20) {
                     alert('La note doit être entre 0 et 20.');
                     event.preventDefault();
+                    return;
                 }
             });
         });

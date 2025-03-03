@@ -1,8 +1,9 @@
 <?php
 
-// src/Entity/Evaluation.php
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -12,7 +13,7 @@ class Evaluation
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank(message: "Le titre est obligatoire.")]
@@ -21,18 +22,25 @@ class Evaluation
         pattern: "/^[a-zA-ZÀ-ÿ][a-zA-ZÀ-ÿ0-9\s\-'!?,.]*$/",
         message: "Le titre doit commencer par une lettre et ne peut pas être composé uniquement de chiffres."
     )]
-    private $titre;
+    private ?string $titre = null;
 
     #[ORM\Column(type: 'date')]
     #[Assert\NotBlank(message: "La date est obligatoire.")]
-    private $date;
+    private ?\DateTimeInterface $date = null;
 
     #[ORM\Column(type: 'string', length: 50)]
     #[Assert\NotBlank(message: "Le type est obligatoire.")]
-    private $type;
+    private ?string $type = null;
 
+    #[ORM\ManyToMany(targetEntity: Etudiant::class, inversedBy: 'evaluations')]
+    #[ORM\JoinTable(name: 'etudiant_evaluation')]
+    private Collection $etudiants;
 
-    // Getters et Setters
+    public function __construct()
+    {
+        $this->etudiants = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -54,7 +62,7 @@ class Evaluation
         return $this->date;
     }
 
-    public function setDate(\DateTimeInterface $date): static
+    public function setDate(?\DateTimeInterface $date): static
     {
         $this->date = $date;
         return $this;
@@ -70,21 +78,28 @@ class Evaluation
         $this->type = $type;
         return $this;
     }
-    
-    public function getAppreciationBasedOnNote(): string
-    {
-        $note = $this->note;
 
-        if ($note >= 0 && $note < 10) {
-            return 'Insuffisant';
-        } elseif ($note >= 10 && $note < 13) {
-            return 'Passable';
-        } elseif ($note >= 13 && $note < 15) {
-            return 'Bien';
-        } elseif ($note >= 15 && $note <= 20) {
-            return 'Très bien';
+    public function getEtudiants(): Collection
+    {
+        return $this->etudiants;
+    }
+
+    public function addEtudiant(Etudiant $etudiant): static
+    {
+        if (!$this->etudiants->contains($etudiant)) {
+            $this->etudiants->add($etudiant);
+            $etudiant->addEvaluation($this);
         }
 
-        return 'Non défini';
+        return $this;
+    }
+
+    public function removeEtudiant(Etudiant $etudiant): static
+    {
+        if ($this->etudiants->removeElement($etudiant)) {
+            $etudiant->removeEvaluation($this);
+        }
+
+        return $this;
     }
 }
