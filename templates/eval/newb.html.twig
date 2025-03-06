@@ -1,0 +1,19 @@
+{% extends 'back.html.twig' %}
+
+{% block title %}Nouvelle Évaluation{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1 class="mb-4 text-center" style="color: #FF8C42; font-weight: 600;">Créer une nouvelle évaluation</h1> <!-- Titre en orange clair -->
+
+        <div class="card shadow-sm p-4" style="max-width: 800px; margin: 0 auto; background-color: #F9F9F9; border: 1px solid #E0E0E0;">
+            {{ include('eval/_formb.html.twig') }}
+
+            <div class="text-center mt-4">
+                <a href="{{ path('app_eval_indexb') }}" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> Retour à la liste
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

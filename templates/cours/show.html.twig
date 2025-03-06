@@ -1,0 +1,15 @@
+{% extends 'basee.html.twig' %}
+
+{% block title %}Détails du Cours{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h2>{{ cours.titre }}</h2>
+    <p><strong>Nombre de chapitres :</strong> {{ cours.nbchapitre }}</p>
+    <p><strong>Description :</strong> {{ cours.description }}</p>
+    <p><strong>Date :</strong> {{ cours.date|date('d/m/Y') }}</p>
+
+
+    <a href="{{ path('cours_index') }}" class="btn btn-primary">Retour à la liste</a>
+</div>
+{% endblock %}

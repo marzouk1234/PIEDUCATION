@@ -1,0 +1,23 @@
+{% extends 'basee.html.twig' %}
+
+{% block title %}Modifier l'Inscription{% endblock %}
+
+{% block body %}
+    <h1>Modifier l'Inscription</h1>
+
+  <h3>Cours :</h3>
+<ul>
+    {% for cours in inscription.cours %}
+        <li>{{ cours.titre }}</li>
+    {% endfor %}
+</ul>
+
+
+    {{ form_start(form) }}
+    
+{{ form_widget(form.dateInscription, {'attr': {'class': 'form-control'}}) }}
+        <button class="btn btn-primary">Mettre à jour l'inscription</button>
+    {{ form_end(form) }}
+
+    <a href="{{ path('inscription_index') }}" class="btn btn-secondary mt-3">Retour à la liste des inscriptions</a>
+{% endblock %}

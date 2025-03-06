@@ -36,7 +36,10 @@ class IsGrantedAttributeListener implements EventSubscriberInterface
     ) {
     }
 
-    public function onKernelControllerArguments(ControllerArgumentsEvent $event): void
+    /**
+     * @return void
+     */
+    public function onKernelControllerArguments(ControllerArgumentsEvent $event)
     {
         /** @var IsGranted[] $attributes */
         if (!\is_array($attributes = $event->getAttributes()[IsGranted::class] ?? null)) {
@@ -60,7 +63,7 @@ class IsGrantedAttributeListener implements EventSubscriberInterface
             }
 
             if (!$this->authChecker->isGranted($attribute->attribute, $subject)) {
-                $message = $attribute->message ?: \sprintf('Access Denied by #[IsGranted(%s)] on controller', $this->getIsGrantedString($attribute));
+                $message = $attribute->message ?: sprintf('Access Denied by #[IsGranted(%s)] on controller', $this->getIsGrantedString($attribute));
 
                 if ($statusCode = $attribute->statusCode) {
                     throw new HttpException($statusCode, $message, code: $attribute->exceptionCode ?? 0);
@@ -92,7 +95,7 @@ class IsGrantedAttributeListener implements EventSubscriberInterface
         }
 
         if (!\array_key_exists($subjectRef, $arguments)) {
-            throw new RuntimeException(\sprintf('Could not find the subject "%s" for the #[IsGranted] attribute. Try adding a "$%s" argument to your controller method.', $subjectRef, $subjectRef));
+            throw new RuntimeException(sprintf('Could not find the subject "%s" for the #[IsGranted] attribute. Try adding a "$%s" argument to your controller method.', $subjectRef, $subjectRef));
         }
 
         return $arguments[$subjectRef];
@@ -100,7 +103,7 @@ class IsGrantedAttributeListener implements EventSubscriberInterface
 
     private function getIsGrantedString(IsGranted $isGranted): string
     {
-        $processValue = fn ($value) => \sprintf($value instanceof Expression ? 'new Expression("%s")' : '"%s"', $value);
+        $processValue = fn ($value) => sprintf($value instanceof Expression ? 'new Expression("%s")' : '"%s"', $value);
 
         $argsString = $processValue($isGranted->attribute);
 
@@ -108,7 +111,7 @@ class IsGrantedAttributeListener implements EventSubscriberInterface
             $subject = !\is_array($subject) ? $processValue($subject) : array_map(function ($key, $value) use ($processValue) {
                 $value = $processValue($value);
 
-                return \is_string($key) ? \sprintf('"%s" => %s', $key, $value) : $value;
+                return \is_string($key) ? sprintf('"%s" => %s', $key, $value) : $value;
             }, array_keys($subject), $subject);
 
             $argsString .= ', '.(!\is_array($subject) ? $subject : '['.implode(', ', $subject).']');

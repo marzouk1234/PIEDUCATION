@@ -1,21 +1,6 @@
 CHANGELOG
 =========
 
-7.2
----
-
- * Make `AccessDecisionStrategyTestCase` compatible with PHPUnit 10+
- * Add `$token` argument to `UserCheckerInterface::checkPostAuth()`
- * Deprecate argument `$secret` of `RememberMeToken`
- * Deprecate returning an empty string in `UserInterface::getUserIdentifier()`
-
-7.0
----
-
- * Remove the `Security` class, use `Symfony\Bundle\SecurityBundle\Security` instead
- * Require explicit argument when calling `TokenStorage::setToken()`
- * Change argument `$lastUsed` of `TokenProviderInterface::updateToken()` to accept `DateTimeInterface`
-
 6.4
 ---
 

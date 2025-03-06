@@ -53,12 +53,18 @@ abstract class AbstractToken implements TokenInterface, \Serializable
         return $this->user;
     }
 
-    public function setUser(UserInterface $user): void
+    /**
+     * @return void
+     */
+    public function setUser(UserInterface $user)
     {
         $this->user = $user;
     }
 
-    public function eraseCredentials(): void
+    /**
+     * @return void
+     */
+    public function eraseCredentials()
     {
         if ($this->getUser() instanceof UserInterface) {
             $this->getUser()->eraseCredentials();
@@ -112,7 +118,10 @@ abstract class AbstractToken implements TokenInterface, \Serializable
         return $this->attributes;
     }
 
-    public function setAttributes(array $attributes): void
+    /**
+     * @return void
+     */
+    public function setAttributes(array $attributes)
     {
         $this->attributes = $attributes;
     }
@@ -125,13 +134,16 @@ abstract class AbstractToken implements TokenInterface, \Serializable
     public function getAttribute(string $name): mixed
     {
         if (!\array_key_exists($name, $this->attributes)) {
-            throw new \InvalidArgumentException(\sprintf('This token has no "%s" attribute.', $name));
+            throw new \InvalidArgumentException(sprintf('This token has no "%s" attribute.', $name));
         }
 
         return $this->attributes[$name];
     }
 
-    public function setAttribute(string $name, mixed $value): void
+    /**
+     * @return void
+     */
+    public function setAttribute(string $name, mixed $value)
     {
         $this->attributes[$name] = $value;
     }
@@ -146,7 +158,7 @@ abstract class AbstractToken implements TokenInterface, \Serializable
             $roles[] = $role;
         }
 
-        return \sprintf('%s(user="%s", roles="%s")', $class, $this->getUserIdentifier(), implode(', ', $roles));
+        return sprintf('%s(user="%s", roles="%s")', $class, $this->getUserIdentifier(), implode(', ', $roles));
     }
 
     /**
