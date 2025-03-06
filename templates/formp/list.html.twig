@@ -32,53 +32,43 @@
 <section class="contact-us section mt-5">
   <div class="container">
     {% if pagination.items is defined and pagination.items is not empty %}
-      <div class="table-responsive">
-        <table class="table table-hover table-bordered text-center align-middle">
-          <thead class="table-dark">
-            <tr>
-              <th>Sujet</th>
-              <th>Auteur</th>
-              <th>Date</th>
-              <th>Contenu</th>
-              <th>Actions</th>
-              <th>QR Code</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for i in pagination.items %}
-              {% set hasError = i.sujet is empty or i.auteur is empty or i.contenu is empty %}
-              <tr class="{% if hasError %}table-danger{% endif %}">
-                <td class="fw-bold">{{ i.sujet }}</td>
-                <td>{{ i.auteur }}</td>
-                <td>{{ i.getDatePub()|date('d/m/Y') }}</td>
-                <td class="text-truncate" style="max-width: 300px;">{{ i.contenu }}</td>
-                <td>
-                  <a href="{{ path('app_formp_edit', {id: i.id}) }}" class="btn btn-sm btn-warning">
-                    <i class="fas fa-edit"></i> Modifier
-                  </a>
-                  <a href="{{ path('app_formp_remove', {id: i.id}) }}" 
-                     class="btn btn-sm btn-danger"
-                     onclick="return confirm('Voulez-vous vraiment supprimer ce formulaire ?');">
-                    <i class="fas fa-trash-alt"></i> Supprimer
-                  </a>
-                </td>
-                <td>
+      <div class="row">
+        {% for i in pagination.items %}
+          {% set hasError = i.sujet is empty or i.auteur is empty or i.contenu is empty %}
+          <div class="col-md-4 mb-4">
+            <div class="card h-100 {% if hasError %}border-danger{% endif %}">
+              <div class="card-body">
+                <h5 class="card-title fw-bold">{{ i.sujet }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Auteur : {{ i.auteur }}</h6>
+                <p class="card-text"><small class="text-muted">Date : {{ i.getDatePub()|date('d/m/Y') }}</small></p>
+                <p class="card-text">{{ i.contenu|slice(0, 100) ~ '...' }}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <a href="{{ path('app_formp_edit', {id: i.id}) }}" class="btn btn-sm btn-warning">
+                      <i class="fas fa-edit"></i> Modifier
+                    </a>
+                    <a href="{{ path('app_formp_remove', {id: i.id}) }}" 
+                       class="btn btn-sm btn-danger"
+                       onclick="return confirm('Voulez-vous vraiment supprimer ce formulaire ?');">
+                      <i class="fas fa-trash-alt"></i> Supprimer
+                    </a>
+                  </div>
                   <button class="btn btn-sm btn-success toggle-qr" data-id="{{ i.id }}">
                     <i class="fas fa-qrcode"></i> QR Code
                   </button>
-                  <div id="qrcode-{{ i.id }}" class="qr-code-container mt-2">
-                    <img src="{{ path('form_qrcode', {'id': i.id}) }}" alt="QR Code">
-                  </div>
-                </td>
-              </tr>
+                </div>
+                <div id="qrcode-{{ i.id }}" class="qr-code-container mt-2 text-center">
+                  <img src="{{ path('form_qrcode', {'id': i.id}) }}" alt="QR Code" class="img-fluid">
+                </div>
+              </div>
               {% if hasError %}
-                <tr class="text-danger">
-                  <td colspan="6"><strong>Erreur :</strong> Veuillez vérifier les champs du formulaire.</td>
-                </tr>
+                <div class="card-footer bg-danger text-white">
+                  <strong>Erreur :</strong> Veuillez vérifier les champs du formulaire.
+                </div>
               {% endif %}
-            {% endfor %}
-          </tbody>
-        </table>
+            </div>
+          </div>
+        {% endfor %}
       </div>
 
       <!-- Pagination -->
@@ -142,6 +132,16 @@
   .pagination .current {
     background-color: #6c757d;
     color: white;
+  }
+
+  /* Card Hover Effect */
+  .card {
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   }
 </style>
 

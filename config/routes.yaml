@@ -3,3 +3,8 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+
+chat:
+    path: /chat
+    controller: App\Controller\ChatbotController::chat
+    methods: POST

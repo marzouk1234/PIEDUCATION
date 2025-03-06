@@ -1,0 +1,9 @@
+
+
+vich_uploader:
+    db_driver: orm # Utilisez "orm" pour Doctrine ORM
+    mappings:
+        formulaire_file: # Nom de la configuration (personnalisable)
+            uri_prefix: /uploads/formulaires # URL d'accès aux fichiers
+            upload_destination: '%kernel.project_dir%/public/uploads/formulaires' # Dossier de stockage
+            namer: Vich\UploaderBundle\Naming\OrignameNamer # Conserve le nom d'origine du fichier

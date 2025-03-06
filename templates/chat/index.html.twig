@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ChatBot{% endblock %}
+
+{% block body %}
+    <h1>ChatBot</h1>
+    <p>Discutez avec notre chatbot en bas à droite.</p>
+
+    <script>
+        var botmanWidget = {
+            frameEndpoint: '/chat/frame',
+            title: 'ChatBot',
+            introMessage: "👋 Salut! Comment puis-je vous aider?",
+            mainColor: "#007bff",
+            bubbleBackground: "#007bff",
+            headerTextColor: "#ffffff"
+        };
+    </script>
+    <script src='https://cdn.jsdelivr.net/npm/botman-web-widget@0/build/js/widget.js'></script>
+{% endblock %}
