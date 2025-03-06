@@ -1,0 +1,32 @@
+{% extends 'back1.html.twig' %}
+
+{% block title %} Liste des Feedbacks {% endblock %}
+
+{% block body %}
+    <h1>Liste des Feedbacks</h1>
+    <a href="{{ path('app_feedback_new') }}" class="btn btn-primary">Ajouter Feedback</a>
+    <table class="table">
+        <tr>
+            <th>Jeu</th>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Feedback</th>
+            <th>Actions</th>
+        </tr>
+        {% for feedback in feedbacks %}
+            <tr>
+                <td>{{ feedback.id}}</td>
+                <td>{{ feedback.nom }}</td>
+                <td>{{ feedback.prenom }}</td>
+                <td>{{ feedback.feedback }}</td>
+                <td>
+                    <a href="{{ path('app_feedback_edit', {'id': feedback.id}) }}" class="btn btn-warning">Modifier</a>
+                    <form method="post" action="{{ path('app_feedback_delete', {'id': feedback.id}) }}">
+                        
+                            {{ include('feedback/_delete_form.html.twig') }}
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

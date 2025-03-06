@@ -13,7 +13,6 @@ namespace Symfony\Bundle\SecurityBundle\DataCollector;
 
 use Symfony\Bundle\SecurityBundle\Debug\TraceableFirewallListener;
 use Symfony\Bundle\SecurityBundle\Security\FirewallMap;
-use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
@@ -37,16 +36,22 @@ use Symfony\Component\VarDumper\Cloner\Data;
  */
 class SecurityDataCollector extends DataCollector implements LateDataCollectorInterface
 {
+    private ?TokenStorageInterface $tokenStorage;
+    private ?RoleHierarchyInterface $roleHierarchy;
+    private ?LogoutUrlGenerator $logoutUrlGenerator;
+    private ?AccessDecisionManagerInterface $accessDecisionManager;
+    private ?FirewallMapInterface $firewallMap;
+    private ?TraceableFirewallListener $firewall;
     private bool $hasVarDumper;
 
-    public function __construct(
-        private ?TokenStorageInterface $tokenStorage = null,
-        private ?RoleHierarchyInterface $roleHierarchy = null,
-        private ?LogoutUrlGenerator $logoutUrlGenerator = null,
-        private ?AccessDecisionManagerInterface $accessDecisionManager = null,
-        private ?FirewallMapInterface $firewallMap = null,
-        private ?TraceableFirewallListener $firewall = null,
-    ) {
+    public function __construct(?TokenStorageInterface $tokenStorage = null, ?RoleHierarchyInterface $roleHierarchy = null, ?LogoutUrlGenerator $logoutUrlGenerator = null, ?AccessDecisionManagerInterface $accessDecisionManager = null, ?FirewallMapInterface $firewallMap = null, ?TraceableFirewallListener $firewall = null)
+    {
+        $this->tokenStorage = $tokenStorage;
+        $this->roleHierarchy = $roleHierarchy;
+        $this->logoutUrlGenerator = $logoutUrlGenerator;
+        $this->accessDecisionManager = $accessDecisionManager;
+        $this->firewallMap = $firewallMap;
+        $this->firewall = $firewall;
         $this->hasVarDumper = class_exists(ClassStub::class);
     }
 
@@ -182,7 +187,7 @@ class SecurityDataCollector extends DataCollector implements LateDataCollectorIn
                 if ($this->data['impersonated'] && null !== $switchUserConfig = $firewallConfig->getSwitchUser()) {
                     $exitPath = $request->getRequestUri();
                     $exitPath .= null === $request->getQueryString() ? '?' : '&';
-                    $exitPath .= \sprintf('%s=%s', urlencode($switchUserConfig['parameter']), SwitchUserListener::EXIT_VALUE);
+                    $exitPath .= sprintf('%s=%s', urlencode($switchUserConfig['parameter']), SwitchUserListener::EXIT_VALUE);
 
                     $this->data['impersonation_exit_path'] = $exitPath;
                 }
@@ -196,27 +201,6 @@ class SecurityDataCollector extends DataCollector implements LateDataCollectorIn
         }
 
         $this->data['authenticators'] = $this->firewall ? $this->firewall->getAuthenticatorsInfo() : [];
-
-        if ($this->data['listeners'] && !($this->data['firewall']['stateless'] ?? true)) {
-            $authCookieName = "{$this->data['firewall']['name']}_auth_profile_token";
-            $deauthCookieName = "{$this->data['firewall']['name']}_deauth_profile_token";
-            $profileToken = $response->headers->get('X-Debug-Token');
-
-            $this->data['auth_profile_token'] = $request->cookies->get($authCookieName);
-            $this->data['deauth_profile_token'] = $request->cookies->get($deauthCookieName);
-
-            if ($this->data['authenticated'] && !$this->data['auth_profile_token']) {
-                $response->headers->setCookie(new Cookie($authCookieName, $profileToken));
-
-                $this->data['deauth_profile_token'] = null;
-                $response->headers->clearCookie($deauthCookieName);
-            } elseif (!$this->data['authenticated'] && !$this->data['deauth_profile_token']) {
-                $response->headers->setCookie(new Cookie($deauthCookieName, $profileToken));
-
-                $this->data['auth_profile_token'] = null;
-                $response->headers->clearCookie($authCookieName);
-            }
-        }
     }
 
     public function reset(): void
@@ -359,16 +343,6 @@ class SecurityDataCollector extends DataCollector implements LateDataCollectorIn
     public function getAuthenticators(): array|Data
     {
         return $this->data['authenticators'];
-    }
-
-    public function getAuthProfileToken(): string|Data|null
-    {
-        return $this->data['auth_profile_token'] ?? null;
-    }
-
-    public function getDeauthProfileToken(): string|Data|null
-    {
-        return $this->data['deauth_profile_token'] ?? null;
     }
 
     public function getName(): string

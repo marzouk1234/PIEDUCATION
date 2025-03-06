@@ -1,0 +1,21 @@
+{% extends 'backk.html.twig' %}
+
+{% block title %}Modifier un Cours{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Modifier le Cours</h1>
+
+    <div class="card p-4 shadow">
+        {{ include('cours/formb.html.twig', {'button_label': 'Mettre à jour'}) }}
+    </div>
+
+    <div class="mt-3">
+        <a href="{{ path('cours_indexb') }}" class="btn btn-secondary">Retour à la liste</a>
+    </div>
+
+    <div class="mt-3">
+        {{ include('cours/delete_formb.html.twig') }}
+    </div>
+</div>
+{% endblock %}

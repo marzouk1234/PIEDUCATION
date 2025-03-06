@@ -1,0 +1,56 @@
+{% extends 'backk.html.twig' %}
+
+
+{% block title %}Gestion des Cours{% endblock %}
+
+{% block body %}
+    </div>
+    <div class="container mt-4">
+    <div class="d-flex justify-content-end mb-3">
+    <a href="{{ path('cours_index') }}" class="btn btn-primary">Go to front</a>
+</div>
+   <div class="course-list">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Titre</th>
+                <th>Nombre de Chapitres</th>
+                <th>Description</th>
+                <th>Date</th>
+                <th>Fichier PDF</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for cours in cours %}
+            <tr>
+                <td>{{ cours.titre }}</td>
+                <td>{{ cours.nbchapitre }}</td>
+                <td>{{ cours.description }}</td>
+                <td>{{ cours.date ? cours.date|date('Y-m-d') : '' }}</td>
+                <td>
+                    {% if cours.pdf %}
+                        <a href="{{ asset('uploads/pdf/' ~ cours.pdf) }}" target="_blank">Voir PDF</a>
+                    {% else %}
+                        Aucun fichier
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ path('cours_showb', {'id': cours.id}) }}" class="btn btn-primary">Voir</a>
+                    <a href="{{ path('cours_editb', {'id': cours.id}) }}" class="btn btn-warning">Modifier</a>
+                      {% include 'cours/delete_formb.html.twig' %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">Aucun cours trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="add-course">
+    <a href="{{ path('cours_newb') }}" class="btn btn-success">Créer un nouveau cours</a>
+</div>
+{% endblock %}

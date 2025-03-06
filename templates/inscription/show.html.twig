@@ -1,0 +1,19 @@
+{% extends 'basee.html.twig' %}
+
+{% block title %}Détails de l'Inscription{% endblock %}
+
+{% block body %}
+    <h1>Détails de l'Inscription</h1>
+
+    <ul>
+        <li><strong>ID:</strong> {{ inscription.id }}</li>
+        <li><strong>Date d'Inscription:</strong> {{ inscription.dateInscription ? inscription.dateInscription|date('Y-m-d H:i') : '' }}</li>
+<li><strong>Cours:</strong> 
+    {% for cours in inscription.cours %}
+        {{ cours.titre }}{% if not loop.last %}, {% endif %}
+    {% endfor %}
+</li>
+    </ul>
+
+    <a href="{{ path('inscription_index') }}" class="btn btn-secondary">Retour à la liste</a>
+{% endblock %}

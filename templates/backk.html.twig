@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Gestion des Cours{% endblock %}</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'><text y='1.2em' font-size='96'>📘</text></svg>">
+
+    {% block stylesheets %}
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+        <link href="{{ asset('backend/assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('backend/assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+        <link href="{{ asset('backend/assets/css/style.css') }}" rel="stylesheet">
+    {% endblock %}
+</head>
+<body>
+
+<!-- ======= Header ======= -->
+<header id="header" class="header fixed-top d-flex align-items-center">
+    <div class="d-flex align-items-center justify-content-between">
+        <a href="{{ path('cours_index') }}" class="logo d-flex align-items-center">
+            <img src="{{ asset('backend/assets/img/logo.png') }}" alt="Logo">
+            <span class="d-none d-lg-block">Gestion Cours</span>
+        </a>
+        <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div>
+</header>
+
+<!-- ======= Sidebar ======= -->
+<aside id="sidebar" class="sidebar">
+    <ul class="sidebar-nav" id="sidebar-nav">
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('cours_indexb') }}">
+                <i class="bi bi-book"></i> <span>Gestion des Cours</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('inscription_indexb') }}">
+                <i class="bi bi-pencil"></i> <span>Gestion des Inscriptions</span>
+            </a>
+        </li>
+    </ul>
+</aside>
+
+<!-- ======= Main Content ======= -->
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>{% block page_title %}Tableau de Bord{% endblock %}</h1>
+    </div>
+
+    <div class="container mt-4">
+        {% block body %}{% endblock %}
+    </div>
+</main>
+
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer">
+    <div class="copyright">
+        &copy; 2025 <strong>Gestion Cours</strong>. Tous droits réservés.
+    </div>
+</footer>
+
+{% block javascripts %}
+    <script src="{{ asset('backend/assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#note-field").on("input", function() {
+                let value = $(this).val();
+                if (isNaN(value) || value < 0 || value > 20) {
+                    $("#note-error").text("La note doit être entre 0 et 20.");
+                } else {
+                    $("#note-error").text("");
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
+</body>
+</html>

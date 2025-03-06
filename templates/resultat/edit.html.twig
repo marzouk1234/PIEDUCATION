@@ -1,0 +1,74 @@
+{% extends 'base2.html.twig' %}
+
+{% block title %}Modifier le Résultat{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1 class="mb-4 text-center" style="color: #FF8C42; font-weight: 600;">Modifier le Résultat</h1> <!-- Titre en orange clair -->
+
+        <div class="card shadow-sm p-4" style="max-width: 800px; margin: 0 auto; background-color: #F9F9F9; border: 1px solid #E0E0E0;">
+            {{ include('resultat/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+
+            <div class="text-center mt-4">
+                <a href="{{ path('app_resultat_index') }}" class="btn btn-secondary me-2">
+                    <i class="bi bi-arrow-left"></i> Retour à la liste
+                </a>
+                <form action="{{ path('app_resultat_delete', {'id': resultat.id}) }}" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce résultat ?');" style="display: inline;">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ resultat.id) }}">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-trash"></i> Supprimer
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        function setAppreciation(note) {
+            if (note < 10) {
+                return 'Insuffisant';
+            } else if (note >= 10 && note <= 13) {
+                return 'Passable';
+            } else if (note > 13 && note <= 15) {
+                return 'Bien';
+            } else if (note > 15 && note <= 18) {
+                return 'Très bien';
+            } else if (note > 18) {
+                return 'Excellent';
+            }
+        }
+
+        // Vérifier la note en temps réel et mettre à jour l'appréciation
+        $('#resultat_note').on('input', function() {
+            var note = $(this).val();
+            if (note >= 0 && note <= 20) {
+                $('#resultat_appreciation').val(setAppreciation(note));
+            } else {
+                $('#resultat_appreciation').val('');
+            }
+        });
+
+        // Vérification avant soumission du formulaire
+        $('form').on('submit', function(event) {
+            var note = $('#resultat_note').val();
+            var dateCreation = $('#resultat_dateCreation').val();
+            var appreciation = $('#resultat_appreciation').val();
+            var evaluation = $('#resultat_evaluation').val();
+
+            if (note === '' || dateCreation === '' || appreciation === '' || evaluation === '') {
+                alert('Tous les champs doivent être remplis.');
+                event.preventDefault();
+                return;
+            }
+
+            if (note < 0 || note > 20) {
+                alert('La note doit être entre 0 et 20.');
+                event.preventDefault();
+                return;
+            }
+        });
+    });
+</script>
+
+{% endblock %}
